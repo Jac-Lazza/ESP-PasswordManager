@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">PasswordManager</string>
+    <string name="login">LOGIN</string>
+    <string name="hello">Hello</string>
+    <string name="insert_password">Insert Password:</string>
+    <string name="create_password">Create Password:</string>
+    <string name="register">REGISTER</string>
+    <string name="confirm_password">Confirm Password:</string>
+    <string name="welcome">Welcome</string>
+    <string name="insert_name">Insert Name:</string>
 </resources>
