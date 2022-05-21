@@ -4,10 +4,16 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 
 class LoginActivity : AppCompatActivity() {
+
+    private lateinit var tvHello : TextView
+    private lateinit var etLoginPwd : EditText
+    private lateinit var btnLogin : Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -21,20 +27,32 @@ class LoginActivity : AppCompatActivity() {
         }
         setContentView(R.layout.activity_login)
 
-        val tv_hello : TextView = findViewById(R.id.tv_hello)
-        val btn_login : Button = findViewById(R.id.btn_login)
-        val et_login_pwd : TextView = findViewById(R.id.et_login_pwd)
+        tvHello = findViewById(R.id.tv_hello)
+        etLoginPwd = findViewById(R.id.et_login_pwd)
+        btnLogin = findViewById(R.id.btn_login)
+
+        if(savedInstanceState != null){
+            val loginPwd = savedInstanceState.getString(getString(R.string.KEY_PWD_INSTSTATE))
+            if (loginPwd != null)
+                etLoginPwd.setText(loginPwd)
+        }
 
         val name = preferences.getString(getString(R.string.KEY_NAME), null)
-        tv_hello.text = getString(R.string.hello, name)
+        tvHello.text = getString(R.string.hello, name)
 
-        btn_login.setOnClickListener {
-            val login_pwd = et_login_pwd.text.toString()
-            if (login_pwd == masterPassword)
+        btnLogin.setOnClickListener {
+            val loginPwd = etLoginPwd.text.toString()
+            if (loginPwd == masterPassword)
                 Toast.makeText(applicationContext, "Password Corretta", Toast.LENGTH_LONG).show()
             else
                 Toast.makeText(applicationContext, "Password Errata", Toast.LENGTH_LONG).show()
         }
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(getString(R.string.KEY_PWD_INSTSTATE),etLoginPwd.text.toString())
+        super.onSaveInstanceState(outState)
 
     }
 }

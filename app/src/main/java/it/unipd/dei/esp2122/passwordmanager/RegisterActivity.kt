@@ -7,25 +7,43 @@ import android.widget.EditText
 import android.widget.Toast
 
 class RegisterActivity : AppCompatActivity() {
+
+    private lateinit var etName : EditText
+    private lateinit var etInsertPwd : EditText
+    private lateinit var etConfirmPwd : EditText
+    private lateinit var btnRegister : Button 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        val et_name : EditText = findViewById(R.id.et_name)
-        val et_insert_pwd : EditText = findViewById(R.id.et_insert_pwd)
-        val et_confirm_pwd : EditText = findViewById(R.id.et_confirm_pwd)
-        val btn_register : Button = findViewById(R.id.btn_register)
+        etName = findViewById(R.id.et_name)
+        etInsertPwd = findViewById(R.id.et_insert_pwd)
+        etConfirmPwd = findViewById(R.id.et_confirm_pwd)
+        btnRegister = findViewById(R.id.btn_register)
 
-        btn_register.setOnClickListener {
-            val name = et_name.text.toString()
-            val insert_pwd = et_insert_pwd.text.toString()
-            val confirm_pwd = et_confirm_pwd.text.toString()
+        if(savedInstanceState != null){
+            val name = savedInstanceState.getString(getString(R.string.KEY_NAME_INSTSTATE))
+            val insertPwd = savedInstanceState.getString(getString(R.string.KEY_INSERT_INSTSTATE))
+            val confirmPwd = savedInstanceState.getString(getString(R.string.KEY_CONFIRM_INSTSTATE))
+            if (name != null)
+                etName.setText(name)
+            if (insertPwd != null)
+                etInsertPwd.setText(insertPwd)
+            if (confirmPwd != null)
+                etConfirmPwd.setText(confirmPwd)
+        }
+
+        btnRegister.setOnClickListener {
+            val name = etName.text.toString()
+            val insertPwd = etInsertPwd.text.toString()
+            val confirmPwd = etConfirmPwd.text.toString()
             //Fare funzione ausiliaria per gestire il controllo delle password
-            if (insert_pwd == confirm_pwd){
+            if (insertPwd == confirmPwd){
                 val preferences = getSharedPreferences(packageName, MODE_PRIVATE)
                 val editor = preferences.edit()
                 editor.putString(getString(R.string.KEY_NAME), name)
-                editor.putString(getString(R.string.KEY_MASTER_PASSWORD), insert_pwd)
+                editor.putString(getString(R.string.KEY_MASTER_PASSWORD), insertPwd)
                 editor.apply()
                 Toast.makeText(applicationContext, "Password Coincidenti", Toast.LENGTH_LONG).show()
             }
@@ -37,4 +55,14 @@ class RegisterActivity : AppCompatActivity() {
 
 
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(getString(R.string.KEY_NAME_INSTSTATE),etName.text.toString())
+        outState.putString(getString(R.string.KEY_INSERT_INSTSTATE),etInsertPwd.text.toString())
+        outState.putString(getString(R.string.KEY_CONFIRM_INSTSTATE),etConfirmPwd.text.toString())
+        super.onSaveInstanceState(outState)
+
+    }
+
+
 }

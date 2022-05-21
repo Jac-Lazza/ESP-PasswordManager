@@ -11,4 +11,10 @@
 
     <string name="KEY_MASTER_PASSWORD">master_password</string>
     <string name="KEY_NAME">name</string>
+
+    <string name="KEY_PWD_INSTSTATE">password</string>
+    <string name="KEY_NAME_INSTSTATE">password</string>
+    <string name="KEY_INSERT_INSTSTATE">password</string>
+    <string name="KEY_CONFIRM_INSTSTATE">password</string>
+
 </resources>
