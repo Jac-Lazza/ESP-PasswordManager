@@ -42,8 +42,12 @@ class LoginActivity : AppCompatActivity() {
 
         btnLogin.setOnClickListener {
             val loginPwd = etLoginPwd.text.toString()
-            if (loginPwd == masterPassword)
+            if (loginPwd == masterPassword){
                 Toast.makeText(applicationContext, "Password Corretta", Toast.LENGTH_LONG).show()
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
             else
                 Toast.makeText(applicationContext, "Password Errata", Toast.LENGTH_LONG).show()
         }

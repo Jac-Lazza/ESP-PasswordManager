@@ -1,5 +1,6 @@
 package it.unipd.dei.esp2122.passwordmanager
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -46,6 +47,9 @@ class RegisterActivity : AppCompatActivity() {
                 editor.putString(getString(R.string.KEY_MASTER_PASSWORD), insertPwd)
                 editor.apply()
                 Toast.makeText(applicationContext, "Password Coincidenti", Toast.LENGTH_LONG).show()
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                startActivity(intent)
+                finish()
             }
             else{
                 Toast.makeText(applicationContext, "Password Non Coincidenti, RIPROVA", Toast.LENGTH_LONG).show()
