@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import java.security.MessageDigest
 
 class LoginActivity : AppCompatActivity() {
 
@@ -42,8 +43,12 @@ class LoginActivity : AppCompatActivity() {
 
         btnLogin.setOnClickListener {
             val loginPwd = etLoginPwd.text.toString()
-            if (loginPwd == masterPassword){
-                Toast.makeText(applicationContext, "Password Corretta", Toast.LENGTH_LONG).show()
+            val passwordBytes : ByteArray = loginPwd.encodeToByteArray()
+            val md = MessageDigest.getInstance("SHA-256")
+            val digestPwd = md.digest(passwordBytes).toString(Charsets.UTF_8)
+
+            if (digestPwd == masterPassword){
+                Toast.makeText(applicationContext, "Password corretta", Toast.LENGTH_LONG).show()
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
                 finish()

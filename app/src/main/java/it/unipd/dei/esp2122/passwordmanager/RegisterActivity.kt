@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import java.security.MessageDigest
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -44,9 +45,15 @@ class RegisterActivity : AppCompatActivity() {
                 val preferences = getSharedPreferences(packageName, MODE_PRIVATE)
                 val editor = preferences.edit()
                 editor.putString(getString(R.string.KEY_NAME), name)
-                editor.putString(getString(R.string.KEY_MASTER_PASSWORD), insertPwd)
+
+                val passwordBytes : ByteArray = insertPwd.encodeToByteArray()
+                val md = MessageDigest.getInstance("SHA-256")
+                val digestPwd = md.digest(passwordBytes)
+                editor.putString(getString(R.string.KEY_MASTER_PASSWORD), digestPwd.toString(Charsets.UTF_8))
+
                 editor.apply()
                 Toast.makeText(applicationContext, "Password Coincidenti", Toast.LENGTH_LONG).show()
+
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
                 finish()
