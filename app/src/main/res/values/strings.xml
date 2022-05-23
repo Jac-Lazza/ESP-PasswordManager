@@ -16,6 +16,7 @@
     <string name="KEY_NAME_INSTSTATE">name_inststate</string>
     <string name="KEY_INSERT_INSTSTATE">pwd_insert_inststate</string>
     <string name="KEY_CONFIRM_INSTSTATE">pwd_confirm_inststate</string>
+    <string name="desc_floating_button">Add new password</string>
 
     <string-array name="password_array">
         <item>Password1</item>
