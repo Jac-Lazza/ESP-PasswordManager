@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ListFragment : Fragment() {
 
@@ -15,8 +18,25 @@ class ListFragment : Fragment() {
         val passwordList = Datasource(requireContext()).getPasswordList()
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.adapter = PasswordAdapter(passwordList)
+        val adapter = CredentialAdapter()
+        recyclerView.adapter = adapter
 
+        val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
+
+        // Add an observer on the LiveData returned by getAlphabetizedWords.
+        // The onChanged() method fires when the observed data changes and the activity is
+        // in the foreground.
+       credentialViewModel.allCredentials.observe(
+            viewLifecycleOwner,
+            Observer { credential ->
+                credential?.let { adapter.setCredentials(it) }
+            }
+        )
+
+        val fab : FloatingActionButton = view.findViewById(R.id.floatingActionButton2)
+        fab.setOnClickListener {
+            credentialViewModel.insert(Credential(0, "Instagram", "avjack_", "PIPPO"))
+        }
         return view
     }
 }
