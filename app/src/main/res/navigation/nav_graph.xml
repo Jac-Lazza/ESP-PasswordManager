@@ -13,7 +13,11 @@
         <action
             android:id="@+id/action_listFragment_to_detailFragment"
             app:destination="@id/detailFragment"/>
+        <action
+            android:id="@+id/action_listFragment_to_newCredentialFragment"
+            app:destination="@id/newCredentialFragment"/>
     </fragment>
+
     <fragment
         android:id="@+id/detailFragment"
         android:name="it.unipd.dei.esp2122.passwordmanager.DetailFragment"
@@ -22,5 +26,15 @@
         <argument
             android:name="message"
             app:argType="string"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/newCredentialFragment"
+        android:name="it.unipd.dei.esp2122.passwordmanager.NewCredentialFragment"
+        android:label="fragment_new_credential"
+        tools:layout="@layout/fragment_new_credential" >
+        <action
+            android:id="@+id/action_newCredentialFragment_to_listFragment"
+            app:popUpTo="@id/listFragment"/>
     </fragment>
 </navigation>
