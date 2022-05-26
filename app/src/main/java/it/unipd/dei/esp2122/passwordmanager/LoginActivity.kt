@@ -7,12 +7,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.textfield.TextInputLayout
 import java.security.MessageDigest
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var tvHello : TextView
-    private lateinit var etLoginPwd : EditText
+    private lateinit var etLoginPwd : TextInputLayout
     private lateinit var btnLogin : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,14 +36,14 @@ class LoginActivity : AppCompatActivity() {
         if(savedInstanceState != null){
             val loginPwd = savedInstanceState.getString(getString(R.string.KEY_PWD_INSTSTATE))
             if (loginPwd != null)
-                etLoginPwd.setText(loginPwd)
+                etLoginPwd.editText!!.setText(loginPwd)
         }
 
         val name = preferences.getString(getString(R.string.KEY_NAME), null)
         tvHello.text = getString(R.string.hello, name)
 
         btnLogin.setOnClickListener {
-            val loginPwd = etLoginPwd.text.toString()
+            val loginPwd = etLoginPwd.editText!!.text.toString()
             val passwordBytes : ByteArray = loginPwd.encodeToByteArray()
             val md = MessageDigest.getInstance("SHA-256")
             val digestPwd = md.digest(passwordBytes).toString(Charsets.UTF_8)
@@ -60,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(getString(R.string.KEY_PWD_INSTSTATE),etLoginPwd.text.toString())
+        outState.putString(getString(R.string.KEY_PWD_INSTSTATE),etLoginPwd.editText!!.text.toString())
         super.onSaveInstanceState(outState)
 
     }
