@@ -13,7 +13,7 @@ class CredentialViewModel(application: Application) : AndroidViewModel(applicati
     val allCredentials : LiveData<List<Credential>>
 
     init {
-        val credentialsDao = CredentialRoomDatabase.getDatabase(application, viewModelScope).credentialDao()
+        val credentialsDao = CredentialRoomDatabase.getDatabase(application).credentialDao()
         repository = CredentialRepository(credentialsDao)
         allCredentials = repository.allCredentials
     }

@@ -14,8 +14,6 @@ class ListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
-        // Retrieves data from datasource
-        val passwordList = Datasource(requireContext()).getPasswordList()
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
         val adapter = CredentialAdapter()
@@ -26,16 +24,13 @@ class ListFragment : Fragment() {
         // Add an observer on the LiveData returned by getAlphabetizedWords.
         // The onChanged() method fires when the observed data changes and the activity is
         // in the foreground.
-       credentialViewModel.allCredentials.observe(
-            viewLifecycleOwner,
-            Observer { credential ->
+       credentialViewModel.allCredentials.observe(viewLifecycleOwner, Observer { credential ->
                 credential?.let { adapter.setCredentials(it) }
-            }
-        )
+       })
 
         val fab : FloatingActionButton = view.findViewById(R.id.floatingActionButton2)
         fab.setOnClickListener {
-            credentialViewModel.insert(Credential(0, "Instagram", "avjack_", "PIPPO"))
+            credentialViewModel.insert(Credential(domain = "Instagram", username = "avjack_", password = "PIPPO"))
         }
         return view
     }

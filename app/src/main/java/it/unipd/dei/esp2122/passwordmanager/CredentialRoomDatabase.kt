@@ -17,18 +17,13 @@ abstract class CredentialRoomDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: CredentialRoomDatabase? = null
 
-        fun getDatabase(
-            context: Context,
-            scope: CoroutineScope
-        ): CredentialRoomDatabase {
+        fun getDatabase(context: Context): CredentialRoomDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     CredentialRoomDatabase::class.java,
                     "credentials_db"
-                )
-                    .fallbackToDestructiveMigration()
-                    .build()
+                ).build()
                 INSTANCE = instance
                 instance
             }

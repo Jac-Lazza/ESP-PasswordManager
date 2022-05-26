@@ -10,27 +10,31 @@ import androidx.navigation.findNavController
 class CredentialAdapter() :
     RecyclerView.Adapter<CredentialAdapter.CredentialViewHolder>() {
 
-    private var credentials = emptyList<Credential>() // Cached copy of words
+    private var credentials = emptyList<Credential>()
 
     private val credentialOnClickListener = View.OnClickListener{ view ->
-        val password = view.findViewById<TextView>(R.id.password_text).text.toString()
+        val password = view.findViewById<TextView>(R.id.tv_domain).text.toString()
         val action = ListFragmentDirections.actionListFragmentToDetailFragment(password)
         view.findNavController().navigate(action)
     }
 
     // Describes an item view and its place within the RecyclerView
     class CredentialViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val passwordTextView: TextView = itemView.findViewById(R.id.password_text)
+        private val tvDomain: TextView = itemView.findViewById(R.id.tv_domain)
+        private val tvUsername: TextView = itemView.findViewById(R.id.tv_username)
+        private val tvPassword: TextView = itemView.findViewById(R.id.tv_password)
 
-        fun bind(word: String) {
-            passwordTextView.text = word
+        fun bind(credential: Credential) {
+            tvDomain.text = credential.domain
+            tvUsername.text = credential.username
+            tvPassword.text = credential.password
         }
     }
 
     // Returns a new ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CredentialViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.password_item, parent, false)
+            .inflate(R.layout.credential_item, parent, false)
 
         view.setOnClickListener(credentialOnClickListener)
 
@@ -44,7 +48,7 @@ class CredentialAdapter() :
 
     // Displays data at a certain position
     override fun onBindViewHolder(holder: CredentialViewHolder, position: Int) {
-        holder.bind(credentials[position].domain)
+        holder.bind(credentials[position])
     }
 
     internal fun setCredentials(credentials: List<Credential>) {

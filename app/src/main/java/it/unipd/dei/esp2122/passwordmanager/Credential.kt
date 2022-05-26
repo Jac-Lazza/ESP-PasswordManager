@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class Credential (
 
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name="id")
-    val id : Int,
+    val id : Int = 0,
 
     @ColumnInfo(name="domain")
     val domain : String,
