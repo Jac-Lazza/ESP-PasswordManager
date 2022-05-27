@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -30,7 +31,7 @@ class ListFragment : Fragment() {
 
         val fab : FloatingActionButton = view.findViewById(R.id.floatingActionButton2)
         fab.setOnClickListener {
-            credentialViewModel.insert(Credential(domain = "Instagram", username = "avjack_", password = "PIPPO"))
+            findNavController().navigate(R.id.action_listFragment_to_newCredentialFragment)
         }
         return view
     }

@@ -45,6 +45,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     // Room components
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
     // Lifecycle components
