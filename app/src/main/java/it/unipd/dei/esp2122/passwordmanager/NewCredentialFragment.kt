@@ -44,6 +44,7 @@ class NewCredentialFragment : Fragment() {
                         password = etPassword.text.toString()
                     )
                 )
+                Toast.makeText(view.context, "Password aggiunta", Toast.LENGTH_LONG).show()
                 view.findNavController().navigate(R.id.action_newCredentialFragment_to_listFragment)
             }
         }

@@ -14,6 +14,9 @@ interface CredentialDao {
     @Insert
     fun insert(credential: Credential)
 
+    @Query("DELETE FROM credentials_table WHERE id = :key")
+    fun deleteByKey(key : Int)
+
     @Query("DELETE FROM credentials_table")
     fun deleteAll()
 

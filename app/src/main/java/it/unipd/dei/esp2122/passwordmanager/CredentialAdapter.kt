@@ -11,12 +11,12 @@ class CredentialAdapter() :
     RecyclerView.Adapter<CredentialAdapter.CredentialViewHolder>() {
 
     private var credentials = emptyList<Credential>()
-
+/*
     private val credentialOnClickListener = View.OnClickListener{ view ->
         val password = view.findViewById<TextView>(R.id.tv_domain).text.toString()
         val action = ListFragmentDirections.actionListFragmentToDetailFragment(password)
         view.findNavController().navigate(action)
-    }
+    }*/
 
     // Describes an item view and its place within the RecyclerView
     class CredentialViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -28,6 +28,12 @@ class CredentialAdapter() :
             tvDomain.text = credential.domain
             tvUsername.text = credential.username
             tvPassword.text = credential.password
+
+            itemView.setOnClickListener { view ->
+                val action = ListFragmentDirections.actionListFragmentToDetailFragment(credential.id, credential.domain, credential.username!!, credential.password)
+                view.findNavController().navigate(action)
+
+            }
         }
     }
 
@@ -36,7 +42,7 @@ class CredentialAdapter() :
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.credential_item, parent, false)
 
-        view.setOnClickListener(credentialOnClickListener)
+        //view.setOnClickListener(credentialOnClickListener)
 
         return CredentialViewHolder(view)
     }
