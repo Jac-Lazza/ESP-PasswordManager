@@ -24,8 +24,20 @@
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <argument
-            android:name="message"
+            android:name="id"
+            app:argType="integer"/>
+        <argument
+            android:name="domain"
             app:argType="string"/>
+        <argument
+            android:name="username"
+            app:argType="string"/>
+        <argument
+            android:name="password"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_detailFragment_to_listFragment"
+            app:popUpTo="@id/listFragment"/>
     </fragment>
 
     <fragment

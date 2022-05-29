@@ -21,4 +21,8 @@ class CredentialViewModel(application: Application) : AndroidViewModel(applicati
     fun insert(credential: Credential) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(credential)
     }
+
+    fun deleteByKey(key : Int) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteByKey(key)
+    }
 }

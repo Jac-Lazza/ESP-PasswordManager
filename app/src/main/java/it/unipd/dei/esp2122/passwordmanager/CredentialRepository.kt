@@ -12,4 +12,10 @@ class CredentialRepository(private val credentialDao: CredentialDao) {
     suspend fun insert(credential: Credential) {
         credentialDao.insert(credential)
     }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun deleteByKey(key : Int) {
+        credentialDao.deleteByKey(key)
+    }
 }
