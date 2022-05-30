@@ -2,12 +2,21 @@
     <string name="app_name">PasswordManager</string>
     <string name="login">LOGIN</string>
     <string name="hello">Hello %1$s</string>
-    <string name="insert_password">Insert Password:</string>
-    <string name="create_password">Create Password:</string>
+    <string name="insert_password">Insert Password</string>
+    <string name="create_password">Create Password</string>
     <string name="register">REGISTER</string>
-    <string name="confirm_password">Confirm Password:</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="welcome">Welcome</string>
-    <string name="insert_name">Insert Name:</string>
+    <string name="insert_name">Insert Name</string>
+
+    <string name="new_credential">New Credential</string>
+    <string name="insert_domain">Insert Domain</string>
+    <string name="insert_username">Insert Username</string>
+    <string name="add">ADD</string>
+
+    <string name="domain">Domain</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 
     <string name="KEY_MASTER_PASSWORD">master_password</string>
     <string name="KEY_NAME">name</string>

@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <!--HELLO TEXTVIEW-->
+    <TextView
+        android:id="@+id/tv_hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello"
+        android:textSize="45sp"
+        app:layout_constraintBottom_toTopOf="@+id/til_login_pwd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--LOGIN BUTTON-->
     <Button
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
@@ -14,59 +27,33 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_login_pwd" />
+        app:layout_constraintTop_toBottomOf="@+id/til_login_pwd" />
 
-    <TextView
-        android:id="@+id/tv_hello"
-        android:layout_width="wrap_content"
+    <!--INSERT PASSWORD-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_login_pwd"
+        style = "@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/et_login_pwd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <!--
-    <EditText
-        android:id="@+id/et_login_pwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:passwordToggleEnabled="true" />
-    -->
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_login_pwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:hint="@string/insert_password"
+        app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
-        app:helperTextEnabled="false"
-        app:helperTextTextAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+
+        >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="wrap_content"
+            android:id="@+id/et_login_pwd"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
 
+            />
     </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/tv_insert_pwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/insert_password"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/et_login_pwd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
