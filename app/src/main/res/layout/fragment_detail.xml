@@ -28,9 +28,15 @@
         android:text="ToFill" />
 
     <Button
-        android:id="@+id/btn_detail_remove"
+        android:id="@+id/btn_detail_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="REMOVE"/>
+        android:text="DELETE"/>
+
+    <Button
+        android:id="@+id/btn_detail_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UPDATE"/>
 
 </LinearLayout>

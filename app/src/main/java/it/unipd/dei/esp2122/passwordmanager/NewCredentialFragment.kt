@@ -1,52 +1,68 @@
 package it.unipd.dei.esp2122.passwordmanager
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class NewCredentialFragment : Fragment() {
 
-    private lateinit var etDomain : EditText
-    private lateinit var etUsername : EditText
-    private lateinit var etPassword : EditText
+    private lateinit var tilDomain : TextInputLayout
+    private lateinit var etDomain : TextInputEditText
+    private lateinit var etUsername : TextInputEditText
+    private lateinit var tilPassword : TextInputLayout
+    private lateinit var etPassword : TextInputEditText
     private lateinit var btnAddCredential : Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_new_credential, container, false)
 
+        tilDomain = view.findViewById(R.id.til_new_domain)
         etDomain = view.findViewById(R.id.et_new_domain)
         etUsername = view.findViewById(R.id.et_new_username)
+        tilPassword = view.findViewById(R.id.til_new_password)
         etPassword = view.findViewById(R.id.et_new_password)
-        btnAddCredential = view.findViewById(R.id.btn_add_credential)
+        btnAddCredential = view.findViewById(R.id.btn_add)
 
+        val activity = requireActivity()
+        val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
-        
+
         btnAddCredential.setOnClickListener {
-            if (etDomain.text.toString().isBlank() || etDomain.text.toString().isEmpty())
-                Toast.makeText(view.context, "Domain non valido", Toast.LENGTH_LONG).show()
-            else if (etUsername.text.toString().isBlank() || etUsername.text.toString().isEmpty())
-                Toast.makeText(view.context, "Username non valido", Toast.LENGTH_LONG).show()
-            else if (etPassword.text.toString().isBlank() || etPassword.text.toString().isEmpty())
-                Toast.makeText(view.context, "Password non valida", Toast.LENGTH_LONG).show()
-            else {
+            val domain = etDomain.text.toString().trim()
+            val username = etUsername.text.toString()
+            val password = etPassword.text.toString()
+
+            if(domain.isNotEmpty() && password.isNotEmpty()) {
                 credentialViewModel.insert(
                     Credential(
-                        domain = etDomain.text.toString(),
-                        username = etUsername.text.toString(),
-                        password = etPassword.text.toString()
+                        domain = domain,
+                        username = username,
+                        password = passwordController.encrypt(password)
                     )
                 )
-                Toast.makeText(view.context, "Password aggiunta", Toast.LENGTH_LONG).show()
-                view.findNavController().navigate(R.id.action_newCredentialFragment_to_listFragment)
+                view.findNavController()
+                    .navigate(R.id.action_newCredentialFragment_to_listFragment)
             }
+            else{
+                if (domain.isEmpty())
+                    tilDomain.error = "Domain non valido"
+                else
+                    tilDomain.error = null
+
+                if (password.isEmpty())
+                    tilPassword.error = "Password non valida"
+                else
+                    tilPassword.error = null
+            }
+
         }
 
         return view

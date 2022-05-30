@@ -8,15 +8,11 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="welcome">Welcome</string>
     <string name="insert_name">Insert Name</string>
+    <string name="desc_floating_button">Add new password</string>
 
-    <string name="new_credential">New Credential</string>
-    <string name="insert_domain">Insert Domain</string>
-    <string name="insert_username">Insert Username</string>
-    <string name="add">ADD</string>
-
-    <string name="domain">Domain</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
+    <string name="delete_dialog_msg">Sei sicuro di eliminare la credenziale?</string>
+    <string name="DELETE">DELETE</string>
+    <string name="CANCEL">CANCEL</string>
 
     <string name="KEY_MASTER_PASSWORD">master_password</string>
     <string name="KEY_NAME">name</string>
@@ -25,24 +21,10 @@
     <string name="KEY_NAME_INSTSTATE">name_inststate</string>
     <string name="KEY_INSERT_INSTSTATE">pwd_insert_inststate</string>
     <string name="KEY_CONFIRM_INSTSTATE">pwd_confirm_inststate</string>
-    <string name="desc_floating_button">Add new password</string>
+    <string name="new_credential">New credential</string>
+    <string name="insert_domain">Insert domain</string>
+    <string name="insert_username">Insert username</string>
+    <string name="add">ADD</string>
 
-    <string-array name="password_array">
-        <item>Password1</item>
-        <item>Password2</item>
-        <item>Password3</item>
-        <item>Password4</item>
-        <item>Password5</item>
-        <item>Password6</item>
-        <item>Password7</item>
-        <item>Password8</item>
-        <item>Password9</item>
-        <item>Password10</item>
-        <item>Password11</item>
-        <item>Password12</item>
-        <item>Password13</item>
-    </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -33,7 +33,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         android:hint="@string/insert_name"
-        >
+        app:errorEnabled="true"
+        app:errorIconDrawable="@android:drawable/stat_notify_error" >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_insert_name"
@@ -58,8 +59,8 @@
         android:hint="@string/insert_password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
-
-        >
+        app:errorEnabled="true"
+        app:errorIconDrawable="@android:drawable/stat_notify_error" >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_insert_pwd"
@@ -84,11 +85,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_insert_pwd"
         app:layout_constraintVertical_bias="0.01"
-        android:hint="Confirm password"
+        android:hint="@string/confirm_password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
-
-        >
+        app:errorEnabled="true"
+        app:errorIconDrawable="@android:drawable/stat_notify_error" >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_confirm_pwd"

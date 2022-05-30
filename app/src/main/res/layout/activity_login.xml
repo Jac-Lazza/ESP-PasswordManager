@@ -44,7 +44,8 @@
         android:hint="@string/insert_password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
-
+        app:errorEnabled="true"
+        app:errorIconDrawable="@android:drawable/stat_notify_error"
         >
 
         <com.google.android.material.textfield.TextInputEditText

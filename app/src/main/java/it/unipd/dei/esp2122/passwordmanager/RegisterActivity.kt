@@ -1,26 +1,33 @@
 package it.unipd.dei.esp2122.passwordmanager
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import java.security.MessageDigest
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var etName : EditText
-    private lateinit var etInsertPwd : EditText
-    private lateinit var etConfirmPwd : EditText
+    private lateinit var tilName : TextInputLayout
+    private lateinit var etName : TextInputEditText
+    private lateinit var tilInsertPwd : TextInputLayout
+    private lateinit var etInsertPwd : TextInputEditText
+    private lateinit var tilConfirmPwd : TextInputLayout
+    private lateinit var etConfirmPwd : TextInputEditText
     private lateinit var btnRegister : Button 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        etName = findViewById(R.id.et_name)
+        tilName = findViewById(R.id.til_insert_name)
+        etName = findViewById(R.id.et_insert_name)
+        tilInsertPwd = findViewById(R.id.til_insert_pwd)
         etInsertPwd = findViewById(R.id.et_insert_pwd)
+        tilConfirmPwd = findViewById(R.id.til_confirm_pwd)
         etConfirmPwd = findViewById(R.id.et_confirm_pwd)
         btnRegister = findViewById(R.id.btn_register)
 
@@ -36,22 +43,23 @@ class RegisterActivity : AppCompatActivity() {
                 etConfirmPwd.setText(confirmPwd)
         }
 
+        val preferences = getSharedPreferences(packageName, Context.MODE_PRIVATE)
+        val passwordController = PasswordController(preferences)
+        passwordController.init()
+
         btnRegister.setOnClickListener {
-            val name = etName.text.toString()
+            val name = etName.text.toString().trim()
             val insertPwd = etInsertPwd.text.toString()
             val confirmPwd = etConfirmPwd.text.toString()
-            //Fare funzione ausiliaria per gestire il controllo delle password
-            if (insertPwd == confirmPwd){
-                val preferences = getSharedPreferences(packageName, MODE_PRIVATE)
+            val strength = passwordController.strength(insertPwd)
+
+            if ((strength != PasswordController.PASSWORD_WEAK) && (insertPwd == confirmPwd)){
                 val editor = preferences.edit()
                 editor.putString(getString(R.string.KEY_NAME), name)
-
-                val passwordBytes : ByteArray = insertPwd.encodeToByteArray()
-                val md = MessageDigest.getInstance("SHA-256")
-                val digestPwd = md.digest(passwordBytes)
-                editor.putString(getString(R.string.KEY_MASTER_PASSWORD), digestPwd.toString(Charsets.UTF_8))
-
+                val digestPwd = passwordController.hash(insertPwd)
+                editor.putString(getString(R.string.KEY_MASTER_PASSWORD), digestPwd)
                 editor.apply()
+
                 Toast.makeText(applicationContext, "Password Coincidenti", Toast.LENGTH_LONG).show()
 
                 val intent = Intent(applicationContext, MainActivity::class.java)
@@ -59,12 +67,17 @@ class RegisterActivity : AppCompatActivity() {
                 finish()
             }
             else{
-                Toast.makeText(applicationContext, "Password Non Coincidenti, RIPROVA", Toast.LENGTH_LONG).show()
+                if(strength == PasswordController.PASSWORD_WEAK)
+                    tilInsertPwd.error = "Password debole!"
+                else
+                    tilInsertPwd.error = null
+
+                if(insertPwd != confirmPwd)
+                    tilConfirmPwd.error = "Password non coincidenti"
+                else
+                    tilConfirmPwd.error = null
             }
-
         }
-
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

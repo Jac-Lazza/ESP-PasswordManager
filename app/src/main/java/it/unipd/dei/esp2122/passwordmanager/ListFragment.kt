@@ -1,5 +1,6 @@
 package it.unipd.dei.esp2122.passwordmanager
 
+import android.content.Context
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +18,8 @@ class ListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
-        val adapter = CredentialAdapter()
+        val preferences = requireActivity().getSharedPreferences(requireActivity().packageName, Context.MODE_PRIVATE)
+        val adapter = CredentialAdapter(PasswordController(preferences))
         recyclerView.adapter = adapter
 
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
