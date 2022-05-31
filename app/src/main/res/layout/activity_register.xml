@@ -15,9 +15,23 @@
         android:textSize="45sp"
         app:layout_constraintBottom_toTopOf="@+id/til_insert_name"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.65"/>
+
+    <!--IMAGE-->
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="65dp"
+        android:layout_height="56dp"
+        android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@+id/til_insert_name"
+        app:layout_constraintEnd_toStartOf="@+id/tv_welcome"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.70" />
+        app:layout_constraintVertical_bias="0.65"
+        app:srcCompat="@drawable/genie_lamp" />
 
     <!--INSERT NAME-->
     <com.google.android.material.textfield.TextInputLayout
@@ -67,6 +81,7 @@
             android:id="@+id/et_insert_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:inputType="textPassword"
 
             />
@@ -95,6 +110,7 @@
             android:id="@+id/et_confirm_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
             android:inputType="textPassword"
 
             />
@@ -123,8 +139,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar"
         app:layout_constraintVertical_bias="0.20" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

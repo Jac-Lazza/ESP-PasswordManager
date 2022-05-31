@@ -7,17 +7,28 @@
     tools:context=".LoginActivity">
 
     <!--HELLO TEXTVIEW-->
-
     <TextView
         android:id="@+id/tv_hello"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello"
         android:textSize="45sp"
+        app:layout_constraintBottom_toTopOf="@+id/deal_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+/>
+
+    <!--DEAL IMAGE-->
+    <ImageView
+        android:id="@+id/deal_image"
+        android:layout_width="138dp"
+        android:layout_height="142dp"
         app:layout_constraintBottom_toTopOf="@+id/til_login_pwd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tv_hello"
+        app:srcCompat="@drawable/deal" />
 
     <!--LOGIN BUTTON-->
     <Button
@@ -42,6 +53,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65"
+
         android:hint="@string/insert_password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
@@ -53,9 +66,11 @@
             android:id="@+id/et_login_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
+            android:maxLines="1"
+            android:inputType="textPersonName"
 
             />
     </com.google.android.material.textfield.TextInputLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
