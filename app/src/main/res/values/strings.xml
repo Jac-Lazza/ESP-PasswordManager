@@ -1,14 +1,33 @@
 <resources>
     <string name="app_name">PasswordManager</string>
+    <!--LOGIN LAYOUT-->
     <string name="login">LOGIN</string>
     <string name="hello">Hello %1$s</string>
     <string name="insert_password">Insert Password</string>
-    <string name="create_password">Create Password</string>
+
+    <!--REGISTER LAYOUT-->
     <string name="register">REGISTER</string>
-    <string name="confirm_password">Confirm Password</string>
     <string name="welcome">Welcome</string>
     <string name="insert_name">Insert Name</string>
+    <string name="create_password">Create Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="desc_floating_button">Add new password</string>
+
+    <!--NEW CREDENTIAL LAYOUT-->
+    <string name="add">ADD</string>
+    <string name="generate">GENERATE</string>
+    <string name="new_credential">New Credential</string>
+    <string name="new_domain">Insert Domain</string>
+    <string name="new_username">Insert Username</string>
+    <string name="new_password">Insert Password</string>
+
+    <!--NEW CREDENTIAL LAYOUT-->
+    <string name="credential">Your Credential</string>
+    <string name="domain">Domain</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+
+
 
     <string name="delete_dialog_msg">Sei sicuro di eliminare la credenziale?</string>
     <string name="DELETE">DELETE</string>
@@ -21,10 +40,8 @@
     <string name="KEY_NAME_INSTSTATE">name_inststate</string>
     <string name="KEY_INSERT_INSTSTATE">pwd_insert_inststate</string>
     <string name="KEY_CONFIRM_INSTSTATE">pwd_confirm_inststate</string>
-    <string name="new_credential">New credential</string>
-    <string name="insert_domain">Insert domain</string>
-    <string name="insert_username">Insert username</string>
-    <string name="add">ADD</string>
+    <string name="update">UPDATE</string>
+    <string name="delete">DELETE</string>
 
 
 </resources>

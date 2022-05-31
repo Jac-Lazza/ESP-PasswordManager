@@ -33,14 +33,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         android:hint="@string/insert_name"
+        app:startIconDrawable="@drawable/user"
         app:errorEnabled="true"
-        app:errorIconDrawable="@android:drawable/stat_notify_error" >
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_insert_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
+            android:maxLines="1"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,8 +61,7 @@
         android:hint="@string/insert_password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
-        app:errorEnabled="true"
-        app:errorIconDrawable="@android:drawable/stat_notify_error" >
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_insert_pwd"
@@ -88,8 +89,7 @@
         android:hint="@string/confirm_password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
-        app:errorEnabled="true"
-        app:errorIconDrawable="@android:drawable/stat_notify_error" >
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_confirm_pwd"
@@ -99,6 +99,17 @@
 
             />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <!--PROGRESS BAR-->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/til_confirm_pwd"
+        app:layout_constraintBottom_toTopOf="@+id/btn_register"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!--REGISTER BUTTON-->
     <Button
@@ -110,8 +121,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_confirm_pwd"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
         app:layout_constraintVertical_bias="0.20" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

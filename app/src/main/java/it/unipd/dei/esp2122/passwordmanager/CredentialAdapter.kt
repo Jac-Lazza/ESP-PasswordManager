@@ -17,13 +17,13 @@ class CredentialAdapter(private val passwordController: PasswordController) :
         private val tvPassword: TextView = itemView.findViewById(R.id.tv_password)
 
         fun bind(credential: Credential) {
-            val decryptedPwd = passwordController.decrypt(credential.password)
+           // val decryptedPwd = passwordController.decrypt(credential.password)
             tvDomain.text = credential.domain
             tvUsername.text = credential.username
-            tvPassword.text = decryptedPwd
+            tvPassword.text = credential.password
 
             itemView.setOnClickListener { view ->
-                val action = ListFragmentDirections.actionListFragmentToDetailFragment(credential.id, credential.domain, credential.username, decryptedPwd)
+                val action = ListFragmentDirections.actionListFragmentToDetailFragment(credential.id, credential.domain, credential.username, credential.password)
                 view.findNavController().navigate(action)
 
             }
