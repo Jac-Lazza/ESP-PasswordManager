@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.android.material.textfield.TextInputEditText
@@ -20,9 +23,20 @@ class NewCredentialFragment : Fragment() {
     private lateinit var tilPassword : TextInputLayout
     private lateinit var etPassword : TextInputEditText
     private lateinit var btnAddCredential : Button
+    private lateinit var btnGeneratePwd : Button
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_new_credential, container, false)
+        val activity = requireActivity()
+        val toolbar : Toolbar = view.findViewById(R.id.toolbar_new_credential)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
+            activity.onBackPressed()
+        }
+
+        val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
+        val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
 
         tilDomain = view.findViewById(R.id.til_new_domain)
         etDomain = view.findViewById(R.id.et_new_domain)
@@ -30,10 +44,12 @@ class NewCredentialFragment : Fragment() {
         tilPassword = view.findViewById(R.id.til_new_password)
         etPassword = view.findViewById(R.id.et_new_password)
         btnAddCredential = view.findViewById(R.id.btn_add)
+        btnGeneratePwd = view.findViewById(R.id.btn_generate)
 
-        val activity = requireActivity()
-        val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
-        val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
+        btnGeneratePwd.setOnClickListener {
+            val generatedPwd = passwordController.generatePassword()
+            etPassword.setText(generatedPwd)
+        }
 
         btnAddCredential.setOnClickListener {
             val domain = etDomain.text.toString().trim()

@@ -5,12 +5,12 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import java.security.KeyStore
 import java.security.MessageDigest
+import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
-import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.GCMParameterSpec
 import kotlin.math.log
-import kotlin.math.pow
 import kotlin.random.Random
 
 class PasswordController(private val preferences : SharedPreferences){
@@ -26,9 +26,9 @@ class PasswordController(private val preferences : SharedPreferences){
         const val ALPHABET_SPECIAL = " !\"#\$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 
         //Let's think if it's to keep
-        const val PASSWORD_WEAK = 0.33
-        const val PASSWORD_MEDIUM = 0.66
-        const val PASSWORD_HARD = 1.0
+        const val PASSWORD_WEAK = 33
+        const val PASSWORD_MEDIUM = 66
+        const val PASSWORD_HARD = 100
     }
 
     /*
@@ -76,33 +76,32 @@ class PasswordController(private val preferences : SharedPreferences){
 
         val encryptedBytes = cipher.doFinal(clearTextBytes)
         //We need to return a string, but the iv can't be lost
-        val result = (encryptedBytes + iv).toString(Charsets.UTF_8)
-        println("Encrypted data: $result") //DEBUG
+        val result = Base64.getEncoder().encodeToString(encryptedBytes + iv)
+
         return result
     }
 
     fun decrypt(cipherText : String) : String {
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-        val cipherTextBytes = cipherText.toByteArray(Charsets.UTF_8)
-        val passwordEncryptedBytes = cipherTextBytes.sliceArray(0..(cipherTextBytes.size - 16 -1))
-        val iv = cipherTextBytes.sliceArray((cipherTextBytes.size - 16)..(cipherTextBytes.size -1))
-        val spec = IvParameterSpec(iv)
+        val cipherTextBytes = Base64.getDecoder().decode(cipherText)
+        val passwordEncryptedBytes = cipherTextBytes.sliceArray(0..(cipherTextBytes.size - 12 - 1))
+        val iv = cipherTextBytes.sliceArray((cipherTextBytes.size - 12)..(cipherTextBytes.size - 1))
+        val spec = GCMParameterSpec(128, iv)
         cipher.init(Cipher.DECRYPT_MODE, getKey(), spec)
 
-
         val result = cipher.doFinal(passwordEncryptedBytes).toString(Charsets.UTF_8)
-        println("Decrypted data: $result") //DEBUG
+
         return result
     }
 
-    fun strength(password : String) : Double{
+    fun strength(password : String) : Int{
         val strengthThreshold = 30.0
         val entropy = entropy(password)
 
         if(entropy <= strengthThreshold){
             return PASSWORD_WEAK
         }
-        else if(entropy <= strengthThreshold.pow(2.0)){
+        else if(entropy <= strengthThreshold * 3){
             return PASSWORD_MEDIUM
         }
         else{

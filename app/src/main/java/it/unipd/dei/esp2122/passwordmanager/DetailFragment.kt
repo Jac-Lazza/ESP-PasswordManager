@@ -14,24 +14,33 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class DetailFragment : Fragment() {
 
-    private lateinit var etDetailDomain : EditText
-    private lateinit var etDetailUsername : EditText
-    private lateinit var etDetailPassword : EditText
+    private lateinit var tilDetailDomain : TextInputLayout
+    private lateinit var etDetailDomain : TextInputEditText
+    private lateinit var etDetailUsername : TextInputEditText
+    private lateinit var tilDetailPassword : TextInputLayout
+    private lateinit var etDetailPassword : TextInputEditText
     private lateinit var etDeleteButton : Button
     private lateinit var etUpdateButton : Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
+
+        val activity = requireActivity()
+        val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
 
-        etDetailDomain = view.findViewById(R.id.et_detail_domain)
-        etDetailUsername = view.findViewById(R.id.et_detail_username)
-        etDetailPassword = view.findViewById(R.id.et_detail_password)
-        etDeleteButton = view.findViewById(R.id.btn_detail_delete)
-        etUpdateButton = view.findViewById(R.id.btn_detail_update)
+        tilDetailDomain = view.findViewById(R.id.til_domain)
+        etDetailDomain = view.findViewById(R.id.et_domain)
+        etDetailUsername = view.findViewById(R.id.et_username)
+        tilDetailPassword = view.findViewById(R.id.til_password)
+        etDetailPassword = view.findViewById(R.id.et_password)
+        etDeleteButton = view.findViewById(R.id.btn_delete)
+        etUpdateButton = view.findViewById(R.id.btn_update)
 
         val id = DetailFragmentArgs.fromBundle(requireArguments()).id
         val domain = DetailFragmentArgs.fromBundle(requireArguments()).domain
@@ -47,25 +56,32 @@ class DetailFragment : Fragment() {
         }
 
         etUpdateButton.setOnClickListener {
-            val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
+            val domain = etDetailDomain.text.toString().trim()
+            val username = etDetailUsername.text.toString()
+            val password = etDetailPassword.text.toString()
 
-            val modifiedDomain = etDetailDomain.text.toString()
-            val modifiedUsername = etDetailUsername.text.toString()
-            val modifiedPassword = etDetailPassword.text.toString()
-            when {
-                modifiedDomain.trim().isEmpty() -> Toast.makeText(view.context, "Domain non valido", Toast.LENGTH_LONG).show()
-                modifiedPassword.isEmpty() -> Toast.makeText(view.context, "Password non valida", Toast.LENGTH_LONG).show()
-                else -> {
-                    credentialViewModel.update(
-                        Credential(
-                            id = id,
-                            domain = modifiedDomain,
-                            username = modifiedUsername,
-                            password = modifiedPassword
-                        )
+            if(domain.isNotEmpty() && password.isNotEmpty()) {
+                credentialViewModel.update(
+                    Credential(
+                        id = id,
+                        domain = domain,
+                        username = username,
+                        password = passwordController.encrypt(password)
                     )
-                }
+                )
+                view.findNavController()
+                    .navigate(R.id.action_detailFragment_to_listFragment)
+            }
+            else{
+                if (domain.isEmpty())
+                    tilDetailDomain.error = "Domain non valido"
+                else
+                    tilDetailDomain.error = null
+
+                if (password.isEmpty())
+                    tilDetailPassword.error = "Password non valida"
+                else
+                    tilDetailPassword.error = null
             }
         }
 

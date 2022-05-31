@@ -36,10 +36,6 @@
     <string name="KEY_MASTER_PASSWORD">master_password</string>
     <string name="KEY_NAME">name</string>
 
-    <string name="KEY_PWD_INSTSTATE">pwd_inststate</string>
-    <string name="KEY_NAME_INSTSTATE">name_inststate</string>
-    <string name="KEY_INSERT_INSTSTATE">pwd_insert_inststate</string>
-    <string name="KEY_CONFIRM_INSTSTATE">pwd_confirm_inststate</string>
     <string name="update">UPDATE</string>
     <string name="delete">DELETE</string>
 

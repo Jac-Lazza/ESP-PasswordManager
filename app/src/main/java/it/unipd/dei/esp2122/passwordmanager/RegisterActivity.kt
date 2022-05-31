@@ -2,9 +2,12 @@ package it.unipd.dei.esp2122.passwordmanager
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -17,7 +20,8 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var etInsertPwd : TextInputEditText
     private lateinit var tilConfirmPwd : TextInputLayout
     private lateinit var etConfirmPwd : TextInputEditText
-    private lateinit var btnRegister : Button 
+    private lateinit var btnRegister : Button
+    private lateinit var progressBar : ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,22 +34,25 @@ class RegisterActivity : AppCompatActivity() {
         tilConfirmPwd = findViewById(R.id.til_confirm_pwd)
         etConfirmPwd = findViewById(R.id.et_confirm_pwd)
         btnRegister = findViewById(R.id.btn_register)
-
-        if(savedInstanceState != null){
-            val name = savedInstanceState.getString(getString(R.string.KEY_NAME_INSTSTATE))
-            val insertPwd = savedInstanceState.getString(getString(R.string.KEY_INSERT_INSTSTATE))
-            val confirmPwd = savedInstanceState.getString(getString(R.string.KEY_CONFIRM_INSTSTATE))
-            if (name != null)
-                etName.setText(name)
-            if (insertPwd != null)
-                etInsertPwd.setText(insertPwd)
-            if (confirmPwd != null)
-                etConfirmPwd.setText(confirmPwd)
-        }
+        progressBar = findViewById(R.id.progressBar)
 
         val preferences = getSharedPreferences(packageName, Context.MODE_PRIVATE)
         val passwordController = PasswordController(preferences)
         passwordController.init()
+
+        etInsertPwd.setOnFocusChangeListener { view, b ->
+            val insertPwd = (view as TextInputEditText).text.toString()
+            if(!b){
+                val strength = passwordController.strength(insertPwd)
+                progressBar.progress = strength
+                when(passwordController.strength(insertPwd)) {
+                    PasswordController.PASSWORD_WEAK -> progressBar.progressTintList = ColorStateList.valueOf(Color.RED)
+                    PasswordController.PASSWORD_MEDIUM -> progressBar.progressTintList = ColorStateList.valueOf(Color.YELLOW)
+                    PasswordController.PASSWORD_HARD -> progressBar.progressTintList = ColorStateList.valueOf(Color.GREEN)
+                }
+
+            }
+        }
 
         btnRegister.setOnClickListener {
             val name = etName.text.toString().trim()
@@ -79,14 +86,5 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
     }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(getString(R.string.KEY_NAME_INSTSTATE),etName.text.toString())
-        outState.putString(getString(R.string.KEY_INSERT_INSTSTATE),etInsertPwd.text.toString())
-        outState.putString(getString(R.string.KEY_CONFIRM_INSTSTATE),etConfirmPwd.text.toString())
-        super.onSaveInstanceState(outState)
-
-    }
-
 
 }

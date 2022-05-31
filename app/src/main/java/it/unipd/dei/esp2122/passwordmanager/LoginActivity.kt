@@ -36,12 +36,6 @@ class LoginActivity : AppCompatActivity() {
         etLoginPwd = findViewById(R.id.et_login_pwd)
         btnLogin = findViewById(R.id.btn_login)
 
-        if(savedInstanceState != null){
-            val loginPwd = savedInstanceState.getString(getString(R.string.KEY_PWD_INSTSTATE))
-            if (loginPwd != null)
-                etLoginPwd.setText(loginPwd)
-        }
-
         val name = preferences.getString(getString(R.string.KEY_NAME), null)
         tvHello.text = getString(R.string.hello, name)
 
@@ -59,12 +53,6 @@ class LoginActivity : AppCompatActivity() {
             else
                 tilLoginPwd.error = "Password Errata"
         }
-
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(getString(R.string.KEY_PWD_INSTSTATE), etLoginPwd.text.toString())
-        super.onSaveInstanceState(outState)
 
     }
 }

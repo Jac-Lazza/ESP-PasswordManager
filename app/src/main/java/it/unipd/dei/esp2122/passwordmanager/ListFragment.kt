@@ -1,21 +1,30 @@
 package it.unipd.dei.esp2122.passwordmanager
 
 import android.content.Context
-import androidx.fragment.app.Fragment
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.appcompat.widget.Toolbar
+
 
 class ListFragment : Fragment() {
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.toolbar_items, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
+        val toolbar : Toolbar = view.findViewById(R.id.toolbar_list)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+        setHasOptionsMenu(true)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
         val preferences = requireActivity().getSharedPreferences(requireActivity().packageName, Context.MODE_PRIVATE)
