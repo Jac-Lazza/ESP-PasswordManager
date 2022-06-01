@@ -36,7 +36,7 @@
     <!--INSERT NAME-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_insert_name"
-        style = "@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -63,7 +63,7 @@
     <!--INSERT PASSWORD-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_insert_pwd"
-        style = "@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -91,7 +91,7 @@
     <!--CONFIRM PASSWORD-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_confirm_pwd"
-        style = "@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -126,7 +126,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_register"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:progress="50"
+        android:progress="100"
         android:progressDrawable="@drawable/custom_progressbar"
         />
 

@@ -76,7 +76,7 @@
     app:layout_constraintTop_toTopOf="parent"
     android:hint="@string/username"
     app:startIconDrawable="@drawable/user"
-    app:endIconMode="password_toggle"
+    app:endIconMode="@drawable/files"
     app:errorEnabled="true">
 
     <com.google.android.material.textfield.TextInputEditText
