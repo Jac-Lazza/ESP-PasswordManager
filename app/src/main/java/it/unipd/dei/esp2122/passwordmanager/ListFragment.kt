@@ -22,9 +22,9 @@ class ListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
-        val toolbar : Toolbar = view.findViewById(R.id.toolbar_list)
-        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-        setHasOptionsMenu(true)
+        //val toolbar : Toolbar = view.findViewById(R.id.toolbar_list)
+       // (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+        //setHasOptionsMenu(true)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
         val preferences = requireActivity().getSharedPreferences(requireActivity().packageName, Context.MODE_PRIVATE)

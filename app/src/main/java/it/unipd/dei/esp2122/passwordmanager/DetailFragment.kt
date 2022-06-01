@@ -36,11 +36,11 @@ class DetailFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
         val activity = requireActivity()
-        val toolbar : Toolbar = view.findViewById(R.id.toolbar_detail)
-        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener {
+        //val toolbar : Toolbar = view.findViewById(R.id.toolbar_detail)
+       // (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+       /* toolbar.setNavigationOnClickListener {
             activity.onBackPressed()
-        }
+        }*/
 
         val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
@@ -63,12 +63,21 @@ class DetailFragment : Fragment() {
         etDetailUsername.setText(username)
         etDetailPassword.setText(password)
 
-        tilDetailUsername.setEndIconOnClickListener {
-            val manager: ClipboardManager? = getSystemService(view.context.CLIPBOARD_SERVICE) as ClipboardManager?
-            val clipData = ClipData.newPlainText(etDetailUsername.text.toString().trim())
-            manager.setPrimaryClip(clipData)
+     /*   tilDetailUsername.setEndIconOnClickListener {
+            val manager: ClipboardManager? = activity.applicationContext.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+            val clipData = ClipData.newPlainText("Username copiato",etDetailUsername.text.toString().trim())
+            manager!!.setPrimaryClip(clipData)
+            Toast.makeText(activity.applicationContext, "Copied to the clipboard", Toast.LENGTH_LONG).show()
 
         }
+
+        tilDetailPassword.setEndIconOnClickListener {
+            val manager: ClipboardManager? = activity.applicationContext.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+            val clipData = ClipData.newPlainText("Password copiato",etDetailPassword.text.toString())
+            manager!!.setPrimaryClip(clipData)
+            Toast.makeText(activity.applicationContext, "Copied to the clipboard", Toast.LENGTH_LONG).show()
+
+        }*/
 
         etDeleteButton.setOnClickListener {
             showDialog(view, credentialViewModel, id)

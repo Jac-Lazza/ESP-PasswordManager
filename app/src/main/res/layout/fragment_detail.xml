@@ -49,7 +49,7 @@
     <!--DOMAIN-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_domain"
-        style = "@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -76,7 +76,7 @@
         <!--USERNAME-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_username"
-        style = "@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -87,8 +87,6 @@
         app:layout_constraintTop_toTopOf="parent"
         android:hint="@string/username"
         app:startIconDrawable="@drawable/user"
-        app:endIconMode="custom"
-        app:endIconDrawable="@android:drawable/ic_menu_save"
         app:errorEnabled="true">
 
     <com.google.android.material.textfield.TextInputEditText
@@ -104,21 +102,21 @@
 
     <!--PASSWORD-->
     <com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/til_password"
-    style = "@style/Widget.Material3.TextInputEditText.OutlinedBox"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="40dp"
-    android:layout_marginEnd="40dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/til_username"
-    app:layout_constraintVertical_bias="0.01"
-    android:hint="@string/password"
-    app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
-    app:endIconMode="password_toggle"
-    app:errorEnabled="true">
+        android:id="@+id/til_password"
+        style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_username"
+        app:layout_constraintVertical_bias="0.01"
+        android:hint="@string/password"
+        app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
+        app:endIconMode="password_toggle"
+        app:errorEnabled="true">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/et_password"
