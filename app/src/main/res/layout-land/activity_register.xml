@@ -7,101 +7,125 @@
     android:layout_centerVertical="true"
     tools:context=".LoginActivity">
 
-
-    <EditText
-        android:id="@+id/et_insert_pwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_create_pwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/create_password"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/et_insert_pwd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline1" />
-
-    <Button
-        android:id="@+id/btn_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/register"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_welcome" />
-
-    <EditText
-        android:id="@+id/et_confirm_pwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/et_insert_pwd" />
-
-    <TextView
-        android:id="@+id/tv_confirm_pwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/confirm_password"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/et_confirm_pwd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline1" />
-
+    <!--WELCOME TEXTVIEW-->
     <TextView
         android:id="@+id/tv_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/welcome"
         android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toStartOf="@+id/guideline1"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/et_name"
-        android:layout_width="wrap_content"
+    <!--INSERT NAME-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_insert_name"
+        style = "@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/et_insert_pwd"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/til_insert_pwd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        android:hint="@string/insert_name"
+        app:startIconDrawable="@drawable/user"
+        app:errorEnabled="true"
+        >
 
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_insert_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!--INSERT PASSWORD-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_insert_pwd"
+        style = "@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="@string/insert_name"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/et_name"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/til_confirm_pwd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline1" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
+        app:layout_constraintTop_toBottomOf="@+id/til_insert_name"
+        app:layout_constraintBaseline_creator="@+id/guideline_horizontal1"
+        android:hint="@string/insert_password"
+        app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
+        app:endIconMode="password_toggle"
+        app:errorEnabled="true">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_insert_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="textPassword"
 
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!--CONFIRM PASSWORD-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_confirm_pwd"
+        style = "@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
+        app:layout_constraintTop_toBottomOf="@+id/til_insert_pwd"
+        app:layout_constraintVertical_bias="0.01"
+        android:hint="@string/confirm_password"
+        app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
+        app:endIconMode="password_toggle"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_confirm_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="textPassword"
+
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!--REGISTER BUTTON-->
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_button"
+        android:text="@string/register"
+        android:textSize="15sp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_welcome" />
+
+    <!--VERTICAL GUIDELINE-->
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline1"
+        android:id="@+id/guideline_vertical1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
-
+    <!--VERTICAL GUIDELINE-->
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
+        android:id="@+id/guideline_horizontal1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

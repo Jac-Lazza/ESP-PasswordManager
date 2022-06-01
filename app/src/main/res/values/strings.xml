@@ -21,11 +21,12 @@
     <string name="new_username">Insert Username</string>
     <string name="new_password">Insert Password</string>
 
-    <!--NEW CREDENTIAL LAYOUT-->
+    <!--NEW CREDENTIAL & CREDENTIAL ITEM LAYOUT-->
     <string name="credential">Your Credential</string>
     <string name="domain">Domain</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+
 
 
 
