@@ -114,6 +114,7 @@ class DetailFragment : Fragment() {
         }
 
 
+
         return view
     }
 

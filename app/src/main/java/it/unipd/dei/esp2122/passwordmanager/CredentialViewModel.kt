@@ -29,4 +29,8 @@ class CredentialViewModel(application: Application) : AndroidViewModel(applicati
     fun deleteByKey(key : Int) = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteByKey(key)
     }
+
+    fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteAll()
+    }
 }

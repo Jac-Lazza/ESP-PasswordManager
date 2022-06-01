@@ -53,7 +53,7 @@ class NewCredentialFragment : Fragment() {
 
         btnAddCredential.setOnClickListener {
             val domain = etDomain.text.toString().trim()
-            val username = etUsername.text.toString()
+            val username = etUsername.text.toString().trim()
             val password = etPassword.text.toString()
 
             if(domain.isNotEmpty() && password.isNotEmpty()) {
