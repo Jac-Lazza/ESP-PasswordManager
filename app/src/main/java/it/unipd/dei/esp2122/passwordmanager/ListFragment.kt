@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,9 +19,23 @@ import androidx.appcompat.widget.Toolbar
 class ListFragment : Fragment() {
 
     private lateinit var credentialViewModel : CredentialViewModel
+    private lateinit var adapter : CredentialAdapter
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.toolbar_items, menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return false
+             }
+
+        })
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -33,14 +48,14 @@ class ListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
         credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
-
+        val preferences = requireActivity().getSharedPreferences(requireActivity().packageName, Context.MODE_PRIVATE)
+        adapter = CredentialAdapter(PasswordController(preferences))
         val toolbar : Toolbar = view.findViewById(R.id.toolbar_list)
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
         setHasOptionsMenu(true)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
-        val preferences = requireActivity().getSharedPreferences(requireActivity().packageName, Context.MODE_PRIVATE)
-        val adapter = CredentialAdapter(PasswordController(preferences))
+
         recyclerView.adapter = adapter
 
         // Add an observer on the LiveData returned by getAlphabetizedWords.

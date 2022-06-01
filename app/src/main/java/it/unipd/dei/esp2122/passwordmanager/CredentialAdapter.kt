@@ -3,14 +3,16 @@ package it.unipd.dei.esp2122.passwordmanager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewManager
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.navigation.findNavController
 
 class CredentialAdapter(private val passwordController: PasswordController) :
-    RecyclerView.Adapter<CredentialAdapter.CredentialViewHolder>() {
+    RecyclerView.Adapter<CredentialAdapter.CredentialViewHolder>(), Filterable {
     private var credentials = emptyList<Credential>()
+    private var credentialsFull = emptyList<Credential>()
 
     inner class CredentialViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvDomain: TextView = itemView.findViewById(R.id.tv_domain)
@@ -54,6 +56,40 @@ class CredentialAdapter(private val passwordController: PasswordController) :
 
     internal fun setCredentials(credentials: List<Credential>) {
         this.credentials = credentials
+        credentialsFull = credentials.toList()
         notifyDataSetChanged()
     }
+
+    override fun getFilter(): Filter {
+        val exampleFilter = object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                var filteredList = mutableListOf<Credential>()
+
+                if(constraint == null || constraint.isEmpty())
+                    filteredList = credentialsFull.toMutableList()
+                else{
+                    val filterPattern = constraint.toString().lowercase().trim()
+                    for(cred : Credential in credentialsFull){
+                        if(cred.domain.lowercase().contains(filterPattern))
+                            filteredList.add(cred)
+                    }
+                }
+
+                val results = FilterResults()
+                results.values = filteredList
+
+                return results
+
+            }
+
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                credentials = results!!.values as List<Credential>
+                notifyDataSetChanged()
+            }
+        }
+
+        return exampleFilter
+    }
+
+
 }
