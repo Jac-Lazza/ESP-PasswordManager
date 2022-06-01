@@ -45,11 +45,11 @@ class RegisterActivity : AppCompatActivity() {
             if(!b){
                 val strength = passwordController.strength(insertPwd)
                 progressBar.progress = strength
-                when(passwordController.strength(insertPwd)) {
+                /*when(passwordController.strength(insertPwd)) {
                     PasswordController.PASSWORD_WEAK -> progressBar.progressTintList = ColorStateList.valueOf(Color.RED)
                     PasswordController.PASSWORD_MEDIUM -> progressBar.progressTintList = ColorStateList.valueOf(Color.YELLOW)
                     PasswordController.PASSWORD_HARD -> progressBar.progressTintList = ColorStateList.valueOf(Color.GREEN)
-                }
+                }*/
 
             }
         }

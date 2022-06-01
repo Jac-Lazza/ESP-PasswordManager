@@ -1,26 +1,32 @@
 package it.unipd.dei.esp2122.passwordmanager
 
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
+
 class DetailFragment : Fragment() {
 
     private lateinit var tilDetailDomain : TextInputLayout
     private lateinit var etDetailDomain : TextInputEditText
+    private lateinit var tilDetailUsername : TextInputLayout
     private lateinit var etDetailUsername : TextInputEditText
     private lateinit var tilDetailPassword : TextInputLayout
     private lateinit var etDetailPassword : TextInputEditText
@@ -29,13 +35,19 @@ class DetailFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
-
         val activity = requireActivity()
+        val toolbar : Toolbar = view.findViewById(R.id.toolbar_detail)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
+            activity.onBackPressed()
+        }
+
         val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
 
         tilDetailDomain = view.findViewById(R.id.til_domain)
         etDetailDomain = view.findViewById(R.id.et_domain)
+        tilDetailUsername = view.findViewById(R.id.til_username)
         etDetailUsername = view.findViewById(R.id.et_username)
         tilDetailPassword = view.findViewById(R.id.til_password)
         etDetailPassword = view.findViewById(R.id.et_password)
@@ -51,13 +63,20 @@ class DetailFragment : Fragment() {
         etDetailUsername.setText(username)
         etDetailPassword.setText(password)
 
+        tilDetailUsername.setEndIconOnClickListener {
+            val manager: ClipboardManager? = getSystemService(view.context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clipData = ClipData.newPlainText(etDetailUsername.text.toString().trim())
+            manager.setPrimaryClip(clipData)
+
+        }
+
         etDeleteButton.setOnClickListener {
             showDialog(view, credentialViewModel, id)
         }
 
         etUpdateButton.setOnClickListener {
             val domain = etDetailDomain.text.toString().trim()
-            val username = etDetailUsername.text.toString()
+            val username = etDetailUsername.text.toString().trim()
             val password = etDetailPassword.text.toString()
 
             if(domain.isNotEmpty() && password.isNotEmpty()) {
@@ -84,6 +103,7 @@ class DetailFragment : Fragment() {
                     tilDetailPassword.error = null
             }
         }
+
 
         return view
     }

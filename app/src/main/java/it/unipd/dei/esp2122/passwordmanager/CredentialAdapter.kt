@@ -3,6 +3,7 @@ package it.unipd.dei.esp2122.passwordmanager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.navigation.findNavController
@@ -19,7 +20,13 @@ class CredentialAdapter(private val passwordController: PasswordController) :
         fun bind(credential: Credential) {
             val decryptedPwd = passwordController.decrypt(credential.password)
             tvDomain.text = credential.domain
-            tvUsername.text = credential.username
+            if(credential.username.isEmpty())
+                tvUsername.visibility = View.GONE
+            else{
+                tvUsername.visibility = View.VISIBLE
+                tvUsername.text = credential.username
+            }
+                tvUsername.text = credential.username
             tvPassword.text = decryptedPwd/*credential.password*/
 
             itemView.setOnClickListener { view ->

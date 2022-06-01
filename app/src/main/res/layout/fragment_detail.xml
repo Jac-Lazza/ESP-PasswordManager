@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".DetailFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/design_default_color_primary"
+        android:theme="@style/ToolbarTheme"
+        app:navigationIcon="@android:drawable/arrow_down_float"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <!--YOUR CREDENTIAL TEXTVIEW-->
     <TextView
         android:id="@+id/tv_credential"
@@ -64,20 +75,21 @@
 
         <!--USERNAME-->
     <com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/til_username"
-    style = "@style/Widget.Material3.TextInputEditText.OutlinedBox"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="40dp"
-    android:layout_marginEnd="40dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:hint="@string/username"
-    app:startIconDrawable="@drawable/user"
-    app:endIconMode="@drawable/files"
-    app:errorEnabled="true">
+        android:id="@+id/til_username"
+        style = "@style/Widget.Material3.TextInputEditText.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="@string/username"
+        app:startIconDrawable="@drawable/user"
+        app:endIconMode="custom"
+        app:endIconDrawable="@android:drawable/ic_menu_save"
+        app:errorEnabled="true">
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/et_username"

@@ -126,7 +126,6 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_register"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:progress="100"
         android:progressDrawable="@drawable/custom_progressbar"
         />
 
