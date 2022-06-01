@@ -29,11 +29,11 @@ class NewCredentialFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_new_credential, container, false)
         val activity = requireActivity()
-       // val toolbar : Toolbar = view.findViewById(R.id.toolbar_new_credential)
-       // (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-       /* toolbar.setNavigationOnClickListener {
+        val toolbar : Toolbar = view.findViewById(R.id.toolbar_new_credential)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
             activity.onBackPressed()
-        }*/
+        }
 
         val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]

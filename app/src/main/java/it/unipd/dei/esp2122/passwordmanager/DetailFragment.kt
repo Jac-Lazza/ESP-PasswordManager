@@ -36,11 +36,11 @@ class DetailFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
         val activity = requireActivity()
-        //val toolbar : Toolbar = view.findViewById(R.id.toolbar_detail)
-       // (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-       /* toolbar.setNavigationOnClickListener {
+        val toolbar : Toolbar = view.findViewById(R.id.toolbar_detail)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
             activity.onBackPressed()
-        }*/
+        }
 
         val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
@@ -84,17 +84,17 @@ class DetailFragment : Fragment() {
         }
 
         etUpdateButton.setOnClickListener {
-            val domain = etDetailDomain.text.toString().trim()
-            val username = etDetailUsername.text.toString().trim()
-            val password = etDetailPassword.text.toString()
+            val updatedDomain = etDetailDomain.text.toString().trim()
+            val updatedUsername = etDetailUsername.text.toString().trim()
+            val updatedPassword = etDetailPassword.text.toString()
 
             if(domain.isNotEmpty() && password.isNotEmpty()) {
                 credentialViewModel.update(
                     Credential(
                         id = id,
-                        domain = domain,
-                        username = username,
-                        password = passwordController.encrypt(password)
+                        domain = updatedDomain,
+                        username = updatedUsername,
+                        password = passwordController.encrypt(updatedPassword)
                     )
                 )
                 view.findNavController()
