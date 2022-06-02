@@ -61,9 +61,7 @@ class PasswordController(private val preferences : SharedPreferences){
         val saltedPassword = "$salt:$password"
         val passwordBytes : ByteArray = saltedPassword.toByteArray(Charsets.UTF_8)
         val md = MessageDigest.getInstance("SHA-256")
-        val hash = md.digest(passwordBytes).toString(Charsets.UTF_8)
-        println("Hash: $hash") //DEBUG
-        return hash
+        return md.digest(passwordBytes).toString(Charsets.UTF_8)
     }
 
     fun encrypt(clearText : String) : String {
@@ -76,9 +74,7 @@ class PasswordController(private val preferences : SharedPreferences){
 
         val encryptedBytes = cipher.doFinal(clearTextBytes)
         //We need to return a string, but the iv can't be lost
-        val result = Base64.getEncoder().encodeToString(encryptedBytes + iv)
-
-        return result
+        return Base64.getEncoder().encodeToString(encryptedBytes + iv)
     }
 
     fun decrypt(cipherText : String) : String {
@@ -89,9 +85,7 @@ class PasswordController(private val preferences : SharedPreferences){
         val spec = GCMParameterSpec(128, iv)
         cipher.init(Cipher.DECRYPT_MODE, getKey(), spec)
 
-        val result = cipher.doFinal(passwordEncryptedBytes).toString(Charsets.UTF_8)
-
-        return result
+        return cipher.doFinal(passwordEncryptedBytes).toString(Charsets.UTF_8)
     }
 
     fun strength(password : String) : Int{
