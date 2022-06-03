@@ -8,6 +8,7 @@ import android.content.Context.CLIPBOARD_SERVICE
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -33,14 +34,19 @@ class DetailFragment : Fragment() {
     private lateinit var etDeleteButton : Button
     private lateinit var etUpdateButton : Button
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == android.R.id.home)
+            requireActivity().onBackPressed()
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
         val activity = requireActivity()
         val toolbar : Toolbar = view.findViewById(R.id.toolbar_detail)
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener {
-            activity.onBackPressed()
-        }
+        activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true);
+        setHasOptionsMenu(true)
 
         val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]

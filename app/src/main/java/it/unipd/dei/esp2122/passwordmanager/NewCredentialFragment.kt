@@ -2,14 +2,11 @@ package it.unipd.dei.esp2122.passwordmanager
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.android.material.textfield.TextInputEditText
@@ -25,15 +22,20 @@ class NewCredentialFragment : Fragment() {
     private lateinit var btnAddCredential : Button
     private lateinit var btnGeneratePwd : Button
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == android.R.id.home)
+            requireActivity().onBackPressed()
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_new_credential, container, false)
         val activity = requireActivity()
         val toolbar : Toolbar = view.findViewById(R.id.toolbar_new_credential)
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener {
-            activity.onBackPressed()
-        }
+        activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true);
+        setHasOptionsMenu(true)
+
 
         val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
