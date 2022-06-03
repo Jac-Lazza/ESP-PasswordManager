@@ -2,8 +2,11 @@ package it.unipd.dei.esp2122.passwordmanager
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -40,6 +43,12 @@ class LoginActivity : AppCompatActivity() {
         tvHello.text = getString(R.string.hello, name)
 
         val passwordController = PasswordController(preferences)
+
+        /* Intent for autofill service */
+        val autofillServiceIntent = Intent(Settings.ACTION_REQUEST_SET_AUTOFILL_SERVICE)
+        autofillServiceIntent.data = Uri.parse("package:${packageName}")
+        startActivity(autofillServiceIntent)
+        /* Stop */
 
         btnLogin.setOnClickListener {
             val loginPwd = etLoginPwd.text.toString()
