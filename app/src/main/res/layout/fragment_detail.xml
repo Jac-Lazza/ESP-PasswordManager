@@ -10,9 +10,9 @@
         android:id="@+id/toolbar_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/design_default_color_primary"
+        android:background="@color/blue"
         android:theme="@style/ToolbarTheme"
-        app:navigationIcon="@android:drawable/arrow_down_float"
+        app:navigationIcon="@drawable/left_arrow__1_"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:text="@string/credential"
         android:textSize="30sp"
+        android:textColor="@color/dark_blue"
         app:layout_constraintBottom_toTopOf="@+id/til_domain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -59,6 +60,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
+        android:textColor="@color/dark_blue"
         android:hint="@string/domain"
         app:startIconDrawable="@drawable/web_development"
         app:errorEnabled="true"
@@ -85,6 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/dark_blue"
         android:hint="@string/username"
         app:startIconDrawable="@drawable/user"
         app:errorEnabled="true">
@@ -113,6 +116,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_username"
         app:layout_constraintVertical_bias="0.01"
+        android:textColor="@color/dark_blue"
         android:hint="@string/password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
@@ -131,12 +135,14 @@
 
 
     <!--UPDATE BUTTON-->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/update"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
         android:textSize="15sp"
+        android:textColor="@color/white"
+        android:background="@drawable/custom_button"
+        android:text="@string/update"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -144,12 +150,14 @@
         app:layout_constraintVertical_bias="0.1" />
 
     <!--DELETE BUTTON-->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/delete"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
         android:textSize="15sp"
+        android:textColor="@color/white"
+        android:background="@drawable/custom_delete_button"
+        android:text="@string/delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
