@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/lightest_blue"
     tools:context=".LoginActivity">
 
     <!--WELCOME TEXTVIEW-->
@@ -13,27 +14,26 @@
         android:layout_height="wrap_content"
         android:text="@string/welcome"
         android:textSize="45sp"
+        android:textColor="@color/dark_blue"
         app:layout_constraintBottom_toTopOf="@+id/til_insert_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.65"/>
+        app:layout_constraintVertical_bias="0.40"/>
 
     <!--IMAGE-->
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="65dp"
-        android:layout_height="56dp"
+        android:layout_width="78dp"
+        android:layout_height="73dp"
         android:layout_weight="1"
         app:layout_constraintBottom_toTopOf="@+id/til_insert_name"
-        app:layout_constraintEnd_toStartOf="@+id/tv_welcome"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65"
+        app:layout_constraintTop_toBottomOf="@id/tv_welcome"
+        app:layout_constraintVertical_bias="0.45"
         app:srcCompat="@drawable/genie_lamp" />
 
-    <!--INSERT NAME-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_insert_name"
         style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -46,6 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
+        android:textColor="@color/dark_blue"
         android:hint="@string/insert_name"
         app:startIconDrawable="@drawable/user"
         app:errorEnabled="true"
@@ -72,6 +73,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/dark_blue"
         android:hint="@string/insert_password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
@@ -101,6 +103,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_insert_pwd"
         app:layout_constraintVertical_bias="0.01"
+        android:textColor="@color/dark_blue"
         android:hint="@string/confirm_password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
@@ -130,12 +133,13 @@
         />
 
     <!--REGISTER BUTTON-->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_register"
         android:layout_width="200dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:background="@drawable/custom_button"
         android:textSize="15sp"
+        android:textColor="@color/white"
         android:text="@string/register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
