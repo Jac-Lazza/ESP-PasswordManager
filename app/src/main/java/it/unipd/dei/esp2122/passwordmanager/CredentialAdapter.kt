@@ -83,7 +83,7 @@ class CredentialAdapter(private val passwordController: PasswordController) :
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                credentials = results!!.values as List<Credential>
+                credentials = (results!!.values as MutableList<Credential>).toList()
                 notifyDataSetChanged()
             }
         }
