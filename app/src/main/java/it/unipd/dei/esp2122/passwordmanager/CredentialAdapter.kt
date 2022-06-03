@@ -12,7 +12,7 @@ import androidx.navigation.findNavController
 class CredentialAdapter(private val passwordController: PasswordController) :
     RecyclerView.Adapter<CredentialAdapter.CredentialViewHolder>(), Filterable {
     private var credentials = emptyList<Credential>()
-    private var credentialsFull = emptyList<Credential>()
+    private var allCredentials = emptyList<Credential>()    //for filtering
 
     inner class CredentialViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvDomain: TextView = itemView.findViewById(R.id.tv_domain)
@@ -56,20 +56,20 @@ class CredentialAdapter(private val passwordController: PasswordController) :
 
     internal fun setCredentials(credentials: List<Credential>) {
         this.credentials = credentials
-        credentialsFull = credentials.toList()
+        this.allCredentials = credentials   //for filtering
         notifyDataSetChanged()
     }
 
     override fun getFilter(): Filter {
         val exampleFilter = object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                var filteredList = mutableListOf<Credential>()
+                val filteredList = mutableListOf<Credential>()
 
                 if(constraint == null || constraint.isEmpty())
-                    filteredList = credentialsFull.toMutableList()
+                    filteredList.addAll(allCredentials)
                 else{
                     val filterPattern = constraint.toString().lowercase().trim()
-                    for(cred : Credential in credentialsFull){
+                    for(cred : Credential in allCredentials){
                         if(cred.domain.lowercase().contains(filterPattern))
                             filteredList.add(cred)
                     }
@@ -83,7 +83,7 @@ class CredentialAdapter(private val passwordController: PasswordController) :
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                credentials = (results!!.values as MutableList<Credential>).toList()
+                credentials = results!!.values as List<Credential>
                 notifyDataSetChanged()
             }
         }
