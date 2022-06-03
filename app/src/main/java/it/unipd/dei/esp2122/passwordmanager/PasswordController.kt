@@ -104,8 +104,11 @@ class PasswordController(private val preferences : SharedPreferences){
         else if(entropy <= strengthThreshold * 3){
             return PASSWORD_MEDIUM
         }
-        else{
+        else if(entropy > strengthThreshold * 3){
             return PASSWORD_HARD
+        }
+        else{
+            return 0
         }
     }
 
