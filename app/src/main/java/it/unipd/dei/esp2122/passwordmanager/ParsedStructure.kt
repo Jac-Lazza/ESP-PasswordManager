@@ -1,6 +1,7 @@
 package it.unipd.dei.esp2122.passwordmanager
 
 import android.app.assist.AssistStructure
+import android.util.Log
 
 class ParsedStructure(private val structure : AssistStructure) {
 
@@ -17,13 +18,15 @@ class ParsedStructure(private val structure : AssistStructure) {
         if(node.autofillHints?.isNotEmpty() == true){
             //The node has autofill hints
             val hints = node.autofillHints.contentToString()
-            println("Autofill hints: $hints") //DEBUG (What is going on?)
+            Log.e("ciao","Autofill hints: $hints")
+            //println("Autofill hints: $hints") //DEBUG (What is going on?)
             //println("Entered Autofill hints")
         }
         else{
             //The node has no autofill hints, ignore them for now
             val hint = node.hint
-            println("Heuristic: $hint")
+            Log.e("ciao","Heuristic: $hint")
+            //println("Heuristic: $hint")
         }
 
         counter++
