@@ -12,6 +12,9 @@ import android.util.Log
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.widget.RemoteViews
+import kotlinx.coroutines.runBlocking
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class PMAutofillService : AutofillService() {
 
@@ -115,7 +118,10 @@ class PMAutofillService : AutofillService() {
         val db = CredentialRoomDatabase.getDatabase(applicationContext)
         val pc = PasswordController(getSharedPreferences(packageName, Context.MODE_PRIVATE))
 
-        val creds = db.credentialDao().searchCredentials("Instagram")
+        val creds = runBlocking {
+            val result = query("")
+            result
+        }
         val result : MutableList<Credential> = mutableListOf()
         for(elem in creds){
             result.add(Credential(elem.username, pc.decrypt(elem.password)))
@@ -126,6 +132,11 @@ class PMAutofillService : AutofillService() {
         test.add(Credential("user", "password"))
         test.add(Credential("admin", "toor"))
         return test*/
+    }
+
+    private suspend fun query(domain: String): List<it.unipd.dei.esp2122.passwordmanager.Credential> = suspendCoroutine { continuation ->
+        val db = CredentialRoomDatabase.getDatabase(applicationContext)
+        continuation.resume(db.credentialDao().searchCredentials("Instagram"))
     }
 
 
