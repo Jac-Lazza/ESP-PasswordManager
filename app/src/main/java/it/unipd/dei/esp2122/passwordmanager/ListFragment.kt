@@ -47,15 +47,16 @@ class ListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
-        credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
-        val preferences = requireActivity().getSharedPreferences(requireActivity().packageName, Context.MODE_PRIVATE)
-        adapter = CredentialAdapter(PasswordController(preferences))
         val toolbar : Toolbar = view.findViewById(R.id.toolbar_list)
+        val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
+        val fab : FloatingActionButton = view.findViewById(R.id.floatingActionButton)
+
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
         setHasOptionsMenu(true)
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
-
+        credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
+        val preferences = requireActivity().getSharedPreferences(requireActivity().packageName, Context.MODE_PRIVATE)
+        adapter = CredentialAdapter(PasswordController(preferences))
         recyclerView.adapter = adapter
 
         // Add an observer on the LiveData returned by getAlphabetizedWords.
@@ -65,7 +66,6 @@ class ListFragment : Fragment() {
                 credential?.let { adapter.setCredentials(it) }
         })
 
-        val fab : FloatingActionButton = view.findViewById(R.id.floatingActionButton2)
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_newCredentialFragment)
         }

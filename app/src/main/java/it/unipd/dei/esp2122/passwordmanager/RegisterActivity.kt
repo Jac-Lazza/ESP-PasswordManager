@@ -14,27 +14,17 @@ import com.google.android.material.textfield.TextInputLayout
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var tilName : TextInputLayout
-    private lateinit var etName : TextInputEditText
-    private lateinit var tilInsertPwd : TextInputLayout
-    private lateinit var etInsertPwd : TextInputEditText
-    private lateinit var tilConfirmPwd : TextInputLayout
-    private lateinit var etConfirmPwd : TextInputEditText
-    private lateinit var btnRegister : Button
-    private lateinit var progressBar : ProgressBar
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        tilName = findViewById(R.id.til_insert_name)
-        etName = findViewById(R.id.et_insert_name)
-        tilInsertPwd = findViewById(R.id.til_insert_pwd)
-        etInsertPwd = findViewById(R.id.et_insert_pwd)
-        tilConfirmPwd = findViewById(R.id.til_confirm_pwd)
-        etConfirmPwd = findViewById(R.id.et_confirm_pwd)
-        btnRegister = findViewById(R.id.btn_register)
-        progressBar = findViewById(R.id.progressBar)
+        val etName: TextInputEditText = findViewById(R.id.et_insert_name)
+        val tilInsertPwd: TextInputLayout = findViewById(R.id.til_insert_pwd)
+        val etInsertPwd: TextInputEditText = findViewById(R.id.et_insert_pwd)
+        val tilConfirmPwd: TextInputLayout = findViewById(R.id.til_confirm_pwd)
+        val etConfirmPwd: TextInputEditText = findViewById(R.id.et_confirm_pwd)
+        val btnRegister: Button = findViewById(R.id.btn_register)
+        val progressBar: ProgressBar = findViewById(R.id.progressBar)
 
         val preferences = getSharedPreferences(packageName, Context.MODE_PRIVATE)
         val passwordController = PasswordController(preferences)
@@ -45,12 +35,6 @@ class RegisterActivity : AppCompatActivity() {
             if(!b){
                 val strength = passwordController.strength(insertPwd)
                 progressBar.progress = strength
-                /*when(passwordController.strength(insertPwd)) {
-                    PasswordController.PASSWORD_WEAK -> progressBar.progressTintList = ColorStateList.valueOf(Color.RED)
-                    PasswordController.PASSWORD_MEDIUM -> progressBar.progressTintList = ColorStateList.valueOf(Color.YELLOW)
-                    PasswordController.PASSWORD_HARD -> progressBar.progressTintList = ColorStateList.valueOf(Color.GREEN)
-                }*/
-
             }
         }
 

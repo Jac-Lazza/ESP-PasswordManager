@@ -14,6 +14,33 @@ class CredentialAdapter(private val passwordController: PasswordController) :
     private var credentials = emptyList<Credential>()
     private var allCredentials = emptyList<Credential>()    //for filtering
 
+    private val mFilter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
+            val filteredList = mutableListOf<Credential>()
+
+            if(constraint == null || constraint.isEmpty())
+                filteredList.addAll(allCredentials)
+            else{
+                val stringToFilter = constraint.toString().trim().lowercase()
+                for(cred in allCredentials){
+                    if(cred.domain.lowercase().contains(stringToFilter))
+                        filteredList.add(cred)
+                }
+            }
+
+            val results = FilterResults()
+            results.values = filteredList
+
+            return results
+
+        }
+
+        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+            credentials = results!!.values as List<Credential>
+            notifyDataSetChanged()
+        }
+    }
+
     inner class CredentialViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvDomain: TextView = itemView.findViewById(R.id.tv_domain)
         private val tvUsername: TextView = itemView.findViewById(R.id.tv_username)
@@ -21,18 +48,21 @@ class CredentialAdapter(private val passwordController: PasswordController) :
 
         fun bind(credential: Credential) {
             val decryptedPwd = passwordController.decrypt(credential.password)
+
             tvDomain.text = credential.domain
-            if(credential.username.isEmpty())
+
+            if(credential.username.isEmpty()) {
                 tvUsername.visibility = View.GONE
+            }
             else{
                 tvUsername.visibility = View.VISIBLE
                 tvUsername.text = credential.username
             }
-                tvUsername.text = credential.username
-            tvPassword.text = decryptedPwd/*credential.password*/
+
+            tvPassword.text = decryptedPwd
 
             itemView.setOnClickListener { view ->
-                val action = ListFragmentDirections.actionListFragmentToDetailFragment(credential.id, credential.domain, credential.username, decryptedPwd/*credential.password*/)
+                val action = ListFragmentDirections.actionListFragmentToDetailFragment(credential.id, credential.domain, credential.username, decryptedPwd)
                 view.findNavController().navigate(action)
 
             }
@@ -40,8 +70,7 @@ class CredentialAdapter(private val passwordController: PasswordController) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CredentialViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.credential_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.credential_item, parent, false)
 
         return CredentialViewHolder(view)
     }
@@ -61,34 +90,7 @@ class CredentialAdapter(private val passwordController: PasswordController) :
     }
 
     override fun getFilter(): Filter {
-        val exampleFilter = object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val filteredList = mutableListOf<Credential>()
-
-                if(constraint == null || constraint.isEmpty())
-                    filteredList.addAll(allCredentials)
-                else{
-                    val filterPattern = constraint.toString().lowercase().trim()
-                    for(cred : Credential in allCredentials){
-                        if(cred.domain.lowercase().contains(filterPattern))
-                            filteredList.add(cred)
-                    }
-                }
-
-                val results = FilterResults()
-                results.values = filteredList
-
-                return results
-
-            }
-
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                credentials = results!!.values as List<Credential>
-                notifyDataSetChanged()
-            }
-        }
-
-        return exampleFilter
+        return mFilter
     }
 
 

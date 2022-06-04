@@ -2,6 +2,7 @@ package it.unipd.dei.esp2122.passwordmanager
 
 import android.app.Service
 import android.app.assist.AssistStructure
+import android.content.Context
 import android.content.Intent
 import android.os.CancellationSignal
 import android.os.IBinder
@@ -110,11 +111,21 @@ class PMAutofillService : AutofillService() {
     }
 
     /* Access to the database */
-    private fun getCredentialsForDomain(domain : String) : MutableList<Credential>{
+    private fun getCredentialsForDomain(domain : String) : List<Credential>{
+        val db = CredentialRoomDatabase.getDatabase(applicationContext)
+        val pc = PasswordController(getSharedPreferences(packageName, Context.MODE_PRIVATE))
+
+        val creds = db.credentialDao().searchCredentials("Instagram")
+        val result : MutableList<Credential> = mutableListOf()
+        for(elem in creds){
+            result.add(Credential(elem.username, pc.decrypt(elem.password)))
+        }
+        return result
+        /*
         val test : MutableList<Credential> = mutableListOf()
         test.add(Credential("user", "password"))
         test.add(Credential("admin", "toor"))
-        return test
+        return test*/
     }
 
 

@@ -21,4 +21,7 @@ interface CredentialDao {
     @Query("DELETE FROM credentials_table")
     fun deleteAll()
 
+    @Query("SELECT * FROM credentials_table WHERE domain = :domain")
+    fun searchCredentials(domain: String): List<Credential>
+
 }
