@@ -57,10 +57,10 @@ class PMAutofillService : AutofillService() {
                 passwordPresentation.setTextViewText(android.R.id.text1, "Password for ${cred.username}")
 
                 val dataset = Dataset.Builder()
-                Log.e("DEBUG", "${parsedData.textViewList.elementAt(0).autofillId}")
-                Log.e("DEBUG", "${parsedData.textViewList.elementAt(1).autofillId}")
-                dataset.setValue(parsedData.textViewList.elementAt(0).autofillId!!, AutofillValue.forText(cred.username), usernamePresentation)
-                dataset.setValue(parsedData.textViewList.elementAt(1).autofillId!!, AutofillValue.forText(cred.password), passwordPresentation)
+                Log.e("DEBUG", "${parsedData.editTextList.elementAt(0).autofillId}")
+                Log.e("DEBUG", "${parsedData.editTextList.elementAt(1).autofillId}")
+                dataset.setValue(parsedData.editTextList.elementAt(0).autofillId!!, AutofillValue.forText(cred.username), usernamePresentation)
+                dataset.setValue(parsedData.editTextList.elementAt(1).autofillId!!, AutofillValue.forText(cred.password), passwordPresentation)
 
                 response.addDataset(dataset.build())
             }
