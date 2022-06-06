@@ -17,11 +17,13 @@ import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-const val AS_TAG = "AutofillService" //Used for debugging
-
 class PMAutofillService : AutofillService() {
 
     private val serviceScope = CoroutineScope(EmptyCoroutineContext)
+
+    private companion object{
+        const val AS_TAG = "AutofillService" //Used for debugging
+    }
 
     /*override fun onBind(intent: Intent): IBinder {
         //In an autofill service this method cannot be overwritten
@@ -51,6 +53,7 @@ class PMAutofillService : AutofillService() {
             Log.d(AS_TAG, "Login form detected")
             serviceScope.launch(){
                 val credentials = queryCredentialsForDomain(parsedData.domain)
+                Log.d(AS_TAG, "Got domain: ${parsedData.domain}")
                 /*val credentials = runBlocking{
                     queryCredentialsForDomain(parsedData.domain)
                 }*/
@@ -140,11 +143,10 @@ class PMAutofillService : AutofillService() {
         val passwordController = PasswordController(getSharedPreferences(packageName, Context.MODE_PRIVATE))
         val result : MutableList<Credential> = mutableListOf()
         return withContext(Dispatchers.IO){
-            val databaseCredentials = databaseHandler.credentialDao().searchCredentials("Instagram") //Testing
+            val databaseCredentials = databaseHandler.credentialDao().searchCredentials(domain) //Testing
             for(cred in databaseCredentials){
                 result.add(Credential(cred.username, passwordController.decrypt(cred.password)))
             }
-            Log.e(AS_TAG, result.toString())
             result
         }
     }

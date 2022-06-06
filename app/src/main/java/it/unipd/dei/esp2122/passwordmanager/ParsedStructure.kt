@@ -1,6 +1,7 @@
 package it.unipd.dei.esp2122.passwordmanager
 
 import android.app.assist.AssistStructure
+import android.content.pm.PackageManager
 import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
@@ -13,8 +14,14 @@ class ParsedStructure(private val structure : AssistStructure) {
     var autofillHintsDetected = 0
 
     init {
-        for(index in 0 until structure.windowNodeCount){
-            parseNode(structure.getWindowNodeAt(index).rootViewNode) //Iterating throughout a forest of ViewNodes
+        domain = structure.activityComponent.packageName
+        /*val pm = PackageManager()
+        val appInfo = pm.getApplicationInfo()*/
+
+        if(structure.windowNodeCount > 0) {
+            for (index in 0 until structure.windowNodeCount) {
+                parseNode(structure.getWindowNodeAt(index).rootViewNode) //Iterating throughout a forest of ViewNodes
+            }
         }
     }
 
