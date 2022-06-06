@@ -10,6 +10,7 @@ import android.service.autofill.*
 import android.text.InputType
 import android.util.Log
 import android.view.View
+import android.view.autofill.AutofillId
 import android.view.autofill.AutofillValue
 import android.widget.RemoteViews
 import kotlinx.coroutines.*
@@ -32,31 +33,42 @@ class PMAutofillService : AutofillService() {
     override fun onFillRequest(request : FillRequest, cancellationSignal : CancellationSignal, callback : FillCallback) {
         val context  : MutableList<FillContext> = request.fillContexts
         val structure : AssistStructure = context[context.size - 1].structure
-        val parsedData = ParsedStructure(structure)
+        val parsedData = AutofillStructure(structure)
+
+        /* Test code for obtaining more informations */
+        try{
+            val packMan = applicationContext.packageManager
+            val appInfo = packMan.getApplicationInfo(parsedData.domain, 0) //Don't know what the zero stands for
+            val appName = packMan.getApplicationLabel(appInfo)
+            val appIcon = packMan.getApplicationIcon(appInfo)
+            Log.e(AS_TAG, "Got appName: ${appName} and a drawable as an application icon :-)")
+        }
+        catch(e : Exception){
+            Log.e(AS_TAG, "Wrong domain or application not installed")
+        }
+        /**/
 
         if(parsedData.autofillHintsDetected > 0){
-            println("Finally an application that uses autofill Hints!")
+            println("Finally an application that uses autofill hints!")
             /**
              * Questo necessita di un po' di spiegazioni:
              * Un servizio di autofill dovrebbe implementare un controllo per la ricerca di autofillHints,
              * se li trova dovrebbe interpretarli, altrimenti dovrebbe procedere con un approccio euristico.
              * Nella nostra esperienza, nessuna applicazione di uso comune dichiara anche un solo suggerimento
              * per l'autofill, e dunque siamo costretti ad usare (e implementare) un approccio euristico.
-             * In aggiunta, non sapendo nemmeno come siano fatti questi suggerimenti e siccome la documentazione
-             * Android al riguardo è leggermente carente, abbiamo deciso di ignorare per questioni di semplicità
-             * lo sviluppo di una parte che controlli anche gli autofillHints e di proseguire in ogni caso
-             * con un approccio euristico.
+             * Dunque, per questioni di semplicità abbiamo deciso di implementare solo la parte euristica
+             * e di eseguirla anche in caso venissero trovati degli autofillHints
              * **/
         }
 
-        if(isLoginForm(parsedData)){ //Proceed to fill the login editTexts
+        val heuristicClassification = parsedData.heuristicClassification()
+
+        if(heuristicClassification == AutofillStructure.EMPTY_LOGIN_FORM){ //Proceed to fill the login editTexts
             Log.d(AS_TAG, "Login form detected")
+            val loginStructure = parsedData.getLoginStructure()
             serviceScope.launch(){
                 val credentials = queryCredentialsForDomain(parsedData.domain)
                 Log.d(AS_TAG, "Got domain: ${parsedData.domain}")
-                /*val credentials = runBlocking{
-                    queryCredentialsForDomain(parsedData.domain)
-                }*/
                 if(credentials.count() > 0){
                     val response  = FillResponse.Builder()
                     for(cred in credentials){
@@ -67,8 +79,8 @@ class PMAutofillService : AutofillService() {
                         passwordPresentation.setTextViewText(android.R.id.text1, "Password for ${cred.username}")
 
                         val dataset = Dataset.Builder()
-                        dataset.setValue(parsedData.editTextList.elementAt(0).autofillId!!, AutofillValue.forText(cred.username), usernamePresentation)
-                        dataset.setValue(parsedData.editTextList.elementAt(1).autofillId!!, AutofillValue.forText(cred.password), passwordPresentation)
+                        dataset.setValue(loginStructure.usernameId, AutofillValue.forText(cred.username), usernamePresentation)
+                        dataset.setValue(loginStructure.passwordId, AutofillValue.forText(cred.password), passwordPresentation)
 
                         response.addDataset(dataset.build())
                     }
@@ -82,7 +94,15 @@ class PMAutofillService : AutofillService() {
             }
             return
         }
-        else if(isRegisterForm(parsedData)){ //Proceed to ask user to save credentials
+        else if(heuristicClassification == AutofillStructure.LOGIN_FORM_WITH_DATA){
+            val username = parsedData.editTextList.elementAt(0).text.toString()
+            val password = parsedData.editTextList.elementAt(1).text.toString()
+            Log.e(AS_TAG, "SAVE PATH TRIGGERED!")
+            Log.e(AS_TAG, "Saving login state possibility: ${username} :: ${password}")
+            callback.onSuccess(null)
+            TODO("Next step (when it's triggered?)")
+        }
+        else if(heuristicClassification == AutofillStructure.REGISTER_FORM_WITH_DATA){ //Proceed to ask user to save credentials
             callback.onSuccess(null)
             TODO("First the filling, then the saving")
         }
@@ -98,43 +118,6 @@ class PMAutofillService : AutofillService() {
 
     override fun onDestroy(){
         serviceScope.cancel()
-    }
-
-    /* Private functions for heuristic */
-    private fun isLoginForm(data : ParsedStructure) : Boolean {
-        val usernameInputTypeMask = InputType.TYPE_CLASS_TEXT or InputType.TYPE_CLASS_NUMBER
-        val passwordInputTypeMask =
-                InputType.TYPE_TEXT_VARIATION_PASSWORD or
-                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD or
-                InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD or
-                InputType.TYPE_NUMBER_VARIATION_PASSWORD
-
-        if(data.editTextList.count() == 2){
-            val possibleUsernameEditText = data.editTextList.elementAt(0)
-            val possiblePasswordEditText = data.editTextList.elementAt(1)
-
-            if(((possibleUsernameEditText.inputType and usernameInputTypeMask) > 0) and ((possiblePasswordEditText.inputType and passwordInputTypeMask) > 0)){
-                if((possibleUsernameEditText.visibility == View.VISIBLE) and (possiblePasswordEditText.visibility == View.VISIBLE)){
-                    return true
-                }
-                else{
-                    Log.d(AS_TAG, "Username visibility: ${possibleUsernameEditText.inputType == View.VISIBLE}")
-                    Log.d(AS_TAG, "Password visibility: ${possiblePasswordEditText.inputType == View.VISIBLE}")
-                }
-            }
-            else{
-                Log.d(AS_TAG, "Username mask: ${(possibleUsernameEditText.inputType and usernameInputTypeMask) > 0}")
-                Log.d(AS_TAG, "Password mask: ${(possiblePasswordEditText.inputType and passwordInputTypeMask) > 0}")
-            }
-        }
-        else{
-            Log.d(AS_TAG, "Number of editText: ${data.editTextList.count()}")
-        }
-        return false
-    }
-
-    private fun isRegisterForm(data : ParsedStructure) : Boolean{
-        return false
     }
 
     /* Access to the database */
@@ -153,4 +136,6 @@ class PMAutofillService : AutofillService() {
 
     /* Classes for the service*/
     private data class Credential(val username : String, val password : String)
+
+    private data class LoginAutofill(val usernameId : AutofillId, val passwordId : AutofillId)
 }
