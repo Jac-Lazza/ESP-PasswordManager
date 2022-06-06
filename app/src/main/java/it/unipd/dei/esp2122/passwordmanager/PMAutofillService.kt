@@ -12,11 +12,16 @@ import android.util.Log
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.widget.RemoteViews
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+const val AS_TAG = "AutofillService" //Used for debugging
+
 class PMAutofillService : AutofillService() {
+
+    private val serviceScope = CoroutineScope(EmptyCoroutineContext)
 
     /*override fun onBind(intent: Intent): IBinder {
         //In an autofill service this method cannot be overwritten
@@ -43,33 +48,36 @@ class PMAutofillService : AutofillService() {
         }
 
         if(isLoginForm(parsedData)){ //Proceed to fill the login editTexts
-            Log.e("AutofillService", "Login form detected")
+            Log.d(AS_TAG, "Login form detected")
+            serviceScope.launch(){
+                val credentials = queryCredentialsForDomain(parsedData.domain)
+                /*val credentials = runBlocking{
+                    queryCredentialsForDomain(parsedData.domain)
+                }*/
+                if(credentials.count() > 0){
+                    val response  = FillResponse.Builder()
+                    for(cred in credentials){
+                        val usernamePresentation = RemoteViews(packageName, android.R.layout.simple_list_item_1)
+                        usernamePresentation.setTextViewText(android.R.id.text1, cred.username)
 
-            val credentials = getCredentialsForDomain(parsedData.domain)
+                        val passwordPresentation = RemoteViews(packageName, android.R.layout.simple_list_item_1)
+                        passwordPresentation.setTextViewText(android.R.id.text1, "Password for ${cred.username}")
 
-            if(credentials.count() == 0){
-                callback.onSuccess(null)
-                return
+                        val dataset = Dataset.Builder()
+                        dataset.setValue(parsedData.editTextList.elementAt(0).autofillId!!, AutofillValue.forText(cred.username), usernamePresentation)
+                        dataset.setValue(parsedData.editTextList.elementAt(1).autofillId!!, AutofillValue.forText(cred.password), passwordPresentation)
+
+                        response.addDataset(dataset.build())
+                    }
+
+                    callback.onSuccess(response.build())
+                }
+                else{
+                    Log.d(AS_TAG, "No suitable credentials found in the database")
+                    callback.onSuccess(null)
+                }
             }
-
-            val response  = FillResponse.Builder()
-            for(cred in credentials){
-                val usernamePresentation = RemoteViews(packageName, android.R.layout.simple_list_item_1)
-                usernamePresentation.setTextViewText(android.R.id.text1, cred.username)
-
-                val passwordPresentation = RemoteViews(packageName, android.R.layout.simple_list_item_1)
-                passwordPresentation.setTextViewText(android.R.id.text1, "Password for ${cred.username}")
-
-                val dataset = Dataset.Builder()
-                Log.e("DEBUG", "${parsedData.editTextList.elementAt(0).autofillId}")
-                Log.e("DEBUG", "${parsedData.editTextList.elementAt(1).autofillId}")
-                dataset.setValue(parsedData.editTextList.elementAt(0).autofillId!!, AutofillValue.forText(cred.username), usernamePresentation)
-                dataset.setValue(parsedData.editTextList.elementAt(1).autofillId!!, AutofillValue.forText(cred.password), passwordPresentation)
-
-                response.addDataset(dataset.build())
-            }
-
-            callback.onSuccess(response.build())
+            return
         }
         else if(isRegisterForm(parsedData)){ //Proceed to ask user to save credentials
             callback.onSuccess(null)
@@ -83,6 +91,10 @@ class PMAutofillService : AutofillService() {
 
     override fun onSaveRequest(request : SaveRequest, callback : SaveCallback) {
         TODO("Not yet implemented")
+    }
+
+    override fun onDestroy(){
+        serviceScope.cancel()
     }
 
     /* Private functions for heuristic */
@@ -100,11 +112,20 @@ class PMAutofillService : AutofillService() {
 
             if(((possibleUsernameEditText.inputType and usernameInputTypeMask) > 0) and ((possiblePasswordEditText.inputType and passwordInputTypeMask) > 0)){
                 if((possibleUsernameEditText.visibility == View.VISIBLE) and (possiblePasswordEditText.visibility == View.VISIBLE)){
-                    Log.e("AutofillService", "Username autofillId: ${possibleUsernameEditText.autofillId}")
-                    Log.e("AutofillService", "Password autofillId: ${possiblePasswordEditText.autofillId}")
                     return true
                 }
+                else{
+                    Log.d(AS_TAG, "Username visibility: ${possibleUsernameEditText.inputType == View.VISIBLE}")
+                    Log.d(AS_TAG, "Password visibility: ${possiblePasswordEditText.inputType == View.VISIBLE}")
+                }
             }
+            else{
+                Log.d(AS_TAG, "Username mask: ${(possibleUsernameEditText.inputType and usernameInputTypeMask) > 0}")
+                Log.d(AS_TAG, "Password mask: ${(possiblePasswordEditText.inputType and passwordInputTypeMask) > 0}")
+            }
+        }
+        else{
+            Log.d(AS_TAG, "Number of editText: ${data.editTextList.count()}")
         }
         return false
     }
@@ -114,32 +135,20 @@ class PMAutofillService : AutofillService() {
     }
 
     /* Access to the database */
-    private fun getCredentialsForDomain(domain : String) : List<Credential>{
-        val db = CredentialRoomDatabase.getDatabase(applicationContext)
-        val pc = PasswordController(getSharedPreferences(packageName, Context.MODE_PRIVATE))
-
-        val creds = runBlocking {
-            val result = query("")
+    private suspend fun queryCredentialsForDomain(domain : String) : List<Credential>{
+        val databaseHandler = CredentialRoomDatabase.getDatabase(applicationContext)
+        val passwordController = PasswordController(getSharedPreferences(packageName, Context.MODE_PRIVATE))
+        val result : MutableList<Credential> = mutableListOf()
+        return withContext(Dispatchers.IO){
+            val databaseCredentials = databaseHandler.credentialDao().searchCredentials("Instagram") //Testing
+            for(cred in databaseCredentials){
+                result.add(Credential(cred.username, passwordController.decrypt(cred.password)))
+            }
+            Log.e(AS_TAG, result.toString())
             result
         }
-        val result : MutableList<Credential> = mutableListOf()
-        for(elem in creds){
-            result.add(Credential(elem.username, pc.decrypt(elem.password)))
-        }
-        return result
-        /*
-        val test : MutableList<Credential> = mutableListOf()
-        test.add(Credential("user", "password"))
-        test.add(Credential("admin", "toor"))
-        return test*/
     }
 
-    private suspend fun query(domain: String): List<it.unipd.dei.esp2122.passwordmanager.Credential> = suspendCoroutine { continuation ->
-        val db = CredentialRoomDatabase.getDatabase(applicationContext)
-        continuation.resume(db.credentialDao().searchCredentials("Instagram"))
-    }
-
-
-
+    /* Classes for the service*/
     private data class Credential(val username : String, val password : String)
 }
