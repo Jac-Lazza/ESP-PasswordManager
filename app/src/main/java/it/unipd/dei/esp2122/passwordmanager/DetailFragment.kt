@@ -6,12 +6,15 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.DialogInterface
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -21,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.lang.Exception
 
 
 class DetailFragment : Fragment() {
@@ -33,6 +37,7 @@ class DetailFragment : Fragment() {
     private lateinit var etDetailPassword : TextInputEditText
     private lateinit var etDeleteButton : Button
     private lateinit var etUpdateButton : Button
+    private lateinit var ivBadge : ImageView
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == android.R.id.home)
@@ -59,13 +64,24 @@ class DetailFragment : Fragment() {
         etDetailPassword = view.findViewById(R.id.et_password)
         etDeleteButton = view.findViewById(R.id.btn_delete)
         etUpdateButton = view.findViewById(R.id.btn_update)
+        ivBadge = view.findViewById(R.id.badge_image)
 
         val id = DetailFragmentArgs.fromBundle(requireArguments()).id
         val domain = DetailFragmentArgs.fromBundle(requireArguments()).domain
         val username = DetailFragmentArgs.fromBundle(requireArguments()).username
         val password = DetailFragmentArgs.fromBundle(requireArguments()).password
 
-        etDetailDomain.setText(domain)
+        var name = domain
+        try {
+            val packageManager = activity.packageManager
+            val appInfo = packageManager.getApplicationInfo(name, PackageManager.GET_META_DATA)
+            name = packageManager.getApplicationLabel(appInfo).toString()
+            ivBadge.setImageDrawable(packageManager.getApplicationIcon(appInfo))
+        }catch (e: Exception){
+            Log.d(CredentialAdapter::class.java.simpleName, "Package not found")
+        }
+
+        etDetailDomain.setText(name)
         etDetailUsername.setText(username)
         etDetailPassword.setText(password)
 
@@ -90,7 +106,6 @@ class DetailFragment : Fragment() {
         }
 
         etUpdateButton.setOnClickListener {
-            val updatedDomain = etDetailDomain.text.toString().trim()
             val updatedUsername = etDetailUsername.text.toString().trim()
             val updatedPassword = etDetailPassword.text.toString()
 
@@ -98,7 +113,7 @@ class DetailFragment : Fragment() {
                 credentialViewModel.update(
                     Credential(
                         id = id,
-                        domain = updatedDomain,
+                        domain = domain,
                         username = updatedUsername,
                         password = passwordController.encrypt(updatedPassword)
                     )

@@ -14,5 +14,10 @@
         android:title="Delete All"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/autofill"
+        android:title="Enable Autofill"
+        app:showAsAction="never"/>
+
 
 </menu>

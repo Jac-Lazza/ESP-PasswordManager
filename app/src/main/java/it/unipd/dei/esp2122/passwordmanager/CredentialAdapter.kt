@@ -1,15 +1,21 @@
 package it.unipd.dei.esp2122.passwordmanager
 
+import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.navigation.findNavController
+import java.lang.Exception
 
-class CredentialAdapter(private val passwordController: PasswordController) :
+
+class CredentialAdapter(private val passwordController: PasswordController, private val packageManager: PackageManager) :
     RecyclerView.Adapter<CredentialAdapter.CredentialViewHolder>(), Filterable {
     private var credentials = emptyList<Credential>()
     private var allCredentials = emptyList<Credential>()    //for filtering
@@ -23,7 +29,8 @@ class CredentialAdapter(private val passwordController: PasswordController) :
             else{
                 val stringToFilter = constraint.toString().trim().lowercase()
                 for(cred in allCredentials){
-                    if(cred.domain.lowercase().contains(stringToFilter))
+                    val name = getNameIcon(cred.domain).first
+                    if(name.lowercase().contains(stringToFilter))
                         filteredList.add(cred)
                 }
             }
@@ -45,11 +52,15 @@ class CredentialAdapter(private val passwordController: PasswordController) :
         private val tvDomain: TextView = itemView.findViewById(R.id.tv_domain)
         private val tvUsername: TextView = itemView.findViewById(R.id.tv_username)
         private val tvPassword: TextView = itemView.findViewById(R.id.tv_password)
+        private val icon: ImageView = itemView.findViewById(R.id.app_icon)
 
         fun bind(credential: Credential) {
-            val decryptedPwd = passwordController.decrypt(credential.password)
-
-            tvDomain.text = credential.domain
+            val pair = getNameIcon(credential.domain)
+            tvDomain.text = pair.first
+            if(pair.second != null)
+                icon.setImageDrawable(pair.second)
+            else
+                icon.setImageResource(R.drawable.internet)
 
             if(credential.username.isEmpty()) {
                 tvUsername.visibility = View.GONE
@@ -59,6 +70,7 @@ class CredentialAdapter(private val passwordController: PasswordController) :
                 tvUsername.text = credential.username
             }
 
+            val decryptedPwd = passwordController.decrypt(credential.password)
             tvPassword.text = decryptedPwd
 
             itemView.setOnClickListener { view ->
@@ -91,6 +103,19 @@ class CredentialAdapter(private val passwordController: PasswordController) :
 
     override fun getFilter(): Filter {
         return mFilter
+    }
+
+    private fun getNameIcon(domain: String): Pair<String, Drawable?>{
+        var name = domain
+        var icon: Drawable? = null
+        try {
+            val appInfo = packageManager.getApplicationInfo(domain, PackageManager.GET_META_DATA)
+            name = packageManager.getApplicationLabel(appInfo).toString()
+            icon = packageManager.getApplicationIcon(appInfo)
+        }catch (e: Exception){
+            Log.d(CredentialAdapter::class.java.simpleName, "Package not found")
+        }
+        return Pair(name, icon)
     }
 
 

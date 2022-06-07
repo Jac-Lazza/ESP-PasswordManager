@@ -1,6 +1,7 @@
 package it.unipd.dei.esp2122.passwordmanager
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
@@ -54,9 +55,19 @@ class NewCredentialFragment : Fragment() {
         }
 
         btnAddCredential.setOnClickListener {
-            val domain = etDomain.text.toString().trim()
+            var domain = etDomain.text.toString().trim()
             val username = etUsername.text.toString().trim()
             val password = etPassword.text.toString()
+
+            val packageManager = requireContext().packageManager
+            val listInfo = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+            for(elem in listInfo){
+                val appName = packageManager.getApplicationLabel(elem).toString()
+                if(appName.lowercase() == domain.lowercase()) {
+                    domain = elem.packageName
+                    break
+                }
+            }
 
             if(domain.isNotEmpty() && password.isNotEmpty()) {
                 credentialViewModel.insert(

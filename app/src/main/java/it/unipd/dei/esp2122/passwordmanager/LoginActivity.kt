@@ -44,12 +44,6 @@ class LoginActivity : AppCompatActivity() {
 
         val passwordController = PasswordController(preferences)
 
-        /* Intent for autofill service */
-        val autofillServiceIntent = Intent(Settings.ACTION_REQUEST_SET_AUTOFILL_SERVICE)
-        autofillServiceIntent.data = Uri.parse("package:${packageName}")
-        startActivity(autofillServiceIntent)
-        /* Stop */
-
         btnLogin.setOnClickListener {
             val loginPwd = etLoginPwd.text.toString()
             val digestPwd = passwordController.hash(loginPwd)

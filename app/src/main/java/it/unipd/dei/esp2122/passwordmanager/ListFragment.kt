@@ -3,7 +3,10 @@ package it.unipd.dei.esp2122.passwordmanager
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -40,8 +43,15 @@ class ListFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.action_delete_all)
-            showDialog(credentialViewModel)
+        when (item.itemId) {
+            R.id.action_delete_all -> showDialog(credentialViewModel)
+            R.id.autofill -> {
+                val autofillServiceIntent = Intent(Settings.ACTION_REQUEST_SET_AUTOFILL_SERVICE)
+                autofillServiceIntent.data = Uri.parse("package:${requireActivity().packageName}")
+                startActivity(autofillServiceIntent)
+            }
+        }
+
         return super.onOptionsItemSelected(item)
     }
 
@@ -56,7 +66,7 @@ class ListFragment : Fragment() {
 
         credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
         val preferences = requireActivity().getSharedPreferences(requireActivity().packageName, Context.MODE_PRIVATE)
-        adapter = CredentialAdapter(PasswordController(preferences))
+        adapter = CredentialAdapter(PasswordController(preferences), requireContext().packageManager)
         recyclerView.adapter = adapter
 
         // Add an observer on the LiveData returned by getAlphabetizedWords.

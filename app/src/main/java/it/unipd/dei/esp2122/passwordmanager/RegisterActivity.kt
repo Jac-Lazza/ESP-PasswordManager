@@ -2,13 +2,12 @@ package it.unipd.dei.esp2122.passwordmanager
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -51,10 +50,15 @@ class RegisterActivity : AppCompatActivity() {
                 editor.putString(getString(R.string.KEY_MASTER_PASSWORD), digestPwd)
                 editor.apply()
 
-                Toast.makeText(applicationContext, "Password Coincidenti", Toast.LENGTH_LONG).show()
-
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
+
+                /* Intent for autofill service */
+                val autofillServiceIntent = Intent(Settings.ACTION_REQUEST_SET_AUTOFILL_SERVICE)
+                autofillServiceIntent.data = Uri.parse("package:${packageName}")
+                startActivity(autofillServiceIntent)
+                /* Stop */
+
                 finish()
             }
             else{
