@@ -49,7 +49,7 @@ class ListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
         val toolbar : Toolbar = view.findViewById(R.id.toolbar_list)
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
-        val fab : FloatingActionButton = view.findViewById(R.id.floatingActionButton)
+        val fab : FloatingActionButton = view.findViewById(R.id.add_floating_btn)
 
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
         setHasOptionsMenu(true)

@@ -5,39 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerVertical="true"
-    tools:context=".LoginActivity">
+    tools:context=".DetailFragment">
 
-    <!--WELCOME TEXTVIEW-->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dark_blue"
+        android:theme="@style/ToolbarTheme"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--YOUR CREDENTIAL TEXTVIEW-->
     <TextView
-        android:id="@+id/tv_welcome"
+        android:id="@+id/tv_credential"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome"
-        android:textSize="40sp"
+        android:text="@string/credential"
+        android:textSize="35sp"
         android:textColor="@color/dark_blue"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal1"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- LAMP IMAGE-->
-    <ImageView
-        android:id="@+id/lamp_register_land"
-        android:layout_width="144dp"
-        android:layout_height="108dp"
-        app:srcCompat="@drawable/genie_lamp"
-        tools:layout_editor_absoluteX="107dp"
-        tools:layout_editor_absoluteY="139dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/guideline_vertical1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_welcome"
-        app:layout_constraintVertical_bias="0.15"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_detail"
         />
 
-    <!--INSERT NAME-->
+    <!--BADGE IMAGE-->
+    <ImageView
+        android:id="@+id/badge_image_land"
+        android:layout_width="87dp"
+        android:layout_height="65dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline_vertical1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_credential"
+        app:srcCompat="@drawable/id_card"
+        app:layout_constraintVertical_bias="0.1"
+        />
+
+    <!--DOMAIN-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_insert_name"
+        android:id="@+id/til_domain"
         style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -46,25 +55,24 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_detail"
         android:textColor="@color/dark_blue"
-        android:hint="@string/insert_name"
-        app:startIconDrawable="@drawable/user"
-        app:errorEnabled="true"
+        android:hint="@string/new_domain"
+        app:startIconDrawable="@drawable/web_development"
+        app:layout_constraintVertical_bias="0.6"
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_insert_name"
+            android:id="@+id/et_domain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="textUri"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!--INSERT PASSWORD-->
+    <!--USERNAME-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_insert_pwd"
+        android:id="@+id/til_username"
         style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -73,27 +81,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_detail"
         app:layout_constraintBaseline_creator="@+id/guideline_horizontal1"
         android:textColor="@color/dark_blue"
-        android:hint="@string/insert_password"
-        app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
-        app:endIconMode="password_toggle"
-        app:errorEnabled="true">
+        android:hint="@string/new_username"
+        app:startIconDrawable="@drawable/user"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_insert_pwd"
+            android:id="@+id/et_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:inputType="textPassword"
-
+            android:inputType="textPersonName"
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!--CONFIRM PASSWORD-->
+    <!--PASSWORD-->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_confirm_pwd"
+        android:id="@+id/til_password"
         style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -103,15 +109,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
         app:layout_constraintTop_toTopOf="@id/guideline_horizontal1"
-        app:layout_constraintVertical_bias="0.4"
         android:textColor="@color/dark_blue"
         android:hint="@string/confirm_password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
-        app:errorEnabled="true">
+        app:errorEnabled="true"
+        app:layout_constraintVertical_bias="0.6"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_confirm_pwd"
+            android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -120,32 +127,36 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!--REGISTER BUTTON-->
+
+    <!--UPDATE BUTTON-->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_register"
+        android:id="@+id/btn_update"
         android:layout_width="200dp"
         android:layout_height="40dp"
         android:background="@drawable/custom_button"
-        android:text="@string/register"
+        android:text="@string/update"
         android:textColor="@color/white"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lamp_register_land"
-        app:layout_constraintVertical_bias="0.30" />
+        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal1"
+        app:layout_constraintVertical_bias="0.3" />
 
-    <!--PROGRESS BAR-->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="250dp"
-        android:layout_height="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/til_confirm_pwd"
+    <!--DELETE BUTTON-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_delete"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:background="@drawable/custom_delete_button"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:text="@string/delete"
+        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/guideline_vertical1"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:progressDrawable="@drawable/custom_progressbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical1"
+        app:layout_constraintVertical_bias="0.65"
         />
 
     <!--VERTICAL GUIDELINE-->

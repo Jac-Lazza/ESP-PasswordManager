@@ -26,15 +26,15 @@
         android:textColor="@color/dark_blue"
         app:layout_constraintBottom_toTopOf="@+id/til_domain"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/badge_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.65"
 
         />
 
-    <!--IMAGE-->
+    <!--BADGE IMAGE-->
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/badge_image"
         android:layout_width="87dp"
         android:layout_height="65dp"
         android:layout_weight="1"
@@ -74,7 +74,7 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-        <!--USERNAME-->
+    <!--USERNAME-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_username"
         style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -146,7 +146,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_password"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.25" />
 
     <!--DELETE BUTTON-->
     <androidx.appcompat.widget.AppCompatButton
@@ -160,7 +160,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_update"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintTop_toBottomOf="@+id/til_password"
+        app:layout_constraintVertical_bias="0.65" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
