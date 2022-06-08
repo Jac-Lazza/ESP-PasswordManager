@@ -34,7 +34,7 @@ class NewCredentialFragment : Fragment() {
         val activity = requireActivity()
         val toolbar : Toolbar = view.findViewById(R.id.toolbar_new_credential)
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-        activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true);
+        activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
 
 
@@ -61,10 +61,12 @@ class NewCredentialFragment : Fragment() {
 
             val packageManager = requireContext().packageManager
             val listInfo = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+            var name = domain
             for(elem in listInfo){
                 val appName = packageManager.getApplicationLabel(elem).toString()
                 if(appName.lowercase() == domain.lowercase()) {
                     domain = elem.packageName
+                    name = appName
                     break
                 }
             }
@@ -72,6 +74,7 @@ class NewCredentialFragment : Fragment() {
             if(domain.isNotEmpty() && password.isNotEmpty()) {
                 credentialViewModel.insert(
                     Credential(
+                        name = name,
                         domain = domain,
                         username = username,
                         password = passwordController.encrypt(password)

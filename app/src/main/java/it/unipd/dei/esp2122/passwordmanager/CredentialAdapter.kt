@@ -29,8 +29,7 @@ class CredentialAdapter(private val passwordController: PasswordController, priv
             else{
                 val stringToFilter = constraint.toString().trim().lowercase()
                 for(cred in allCredentials){
-                    val name = getNameIcon(cred.domain).first
-                    if(name.lowercase().contains(stringToFilter))
+                    if(cred.name.lowercase().contains(stringToFilter))
                         filteredList.add(cred)
                 }
             }
@@ -49,18 +48,19 @@ class CredentialAdapter(private val passwordController: PasswordController, priv
     }
 
     inner class CredentialViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvDomain: TextView = itemView.findViewById(R.id.tv_domain)
+        private val tvName: TextView = itemView.findViewById(R.id.tv_name)
         private val tvUsername: TextView = itemView.findViewById(R.id.tv_username)
         private val tvPassword: TextView = itemView.findViewById(R.id.tv_password)
-        private val icon: ImageView = itemView.findViewById(R.id.app_icon)
+        private val ivIcon: ImageView = itemView.findViewById(R.id.app_icon)
 
         fun bind(credential: Credential) {
-            val pair = getNameIcon(credential.domain)
-            tvDomain.text = pair.first
-            if(pair.second != null)
-                icon.setImageDrawable(pair.second)
+            val icon = getIcon(credential.domain)
+            if(icon != null)
+                ivIcon.setImageDrawable(icon)
             else
-                icon.setImageResource(R.drawable.internet)
+                ivIcon.setImageResource(R.drawable.internet)
+
+            tvName.text = credential.name
 
             if(credential.username.isEmpty()) {
                 tvUsername.visibility = View.GONE
@@ -74,7 +74,7 @@ class CredentialAdapter(private val passwordController: PasswordController, priv
             tvPassword.text = decryptedPwd
 
             itemView.setOnClickListener { view ->
-                val action = ListFragmentDirections.actionListFragmentToDetailFragment(credential.id, credential.domain, credential.username, decryptedPwd)
+                val action = ListFragmentDirections.actionListFragmentToDetailFragment(credential.id, credential.name, credential.domain, credential.username, decryptedPwd)
                 view.findNavController().navigate(action)
 
             }
@@ -105,17 +105,15 @@ class CredentialAdapter(private val passwordController: PasswordController, priv
         return mFilter
     }
 
-    private fun getNameIcon(domain: String): Pair<String, Drawable?>{
-        var name = domain
+    private fun getIcon(domain: String): Drawable?{
         var icon: Drawable? = null
         try {
             val appInfo = packageManager.getApplicationInfo(domain, PackageManager.GET_META_DATA)
-            name = packageManager.getApplicationLabel(appInfo).toString()
             icon = packageManager.getApplicationIcon(appInfo)
         }catch (e: Exception){
             Log.d(CredentialAdapter::class.java.simpleName, "Package not found")
         }
-        return Pair(name, icon)
+        return icon
     }
 
 

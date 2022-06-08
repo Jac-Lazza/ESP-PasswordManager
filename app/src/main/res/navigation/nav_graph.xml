@@ -27,6 +27,9 @@
             android:name="id"
             app:argType="integer"/>
         <argument
+            android:name="name"
+            app:argType="string"/>
+        <argument
             android:name="domain"
             app:argType="string"/>
         <argument

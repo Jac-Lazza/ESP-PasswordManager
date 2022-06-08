@@ -26,7 +26,7 @@
 
     <!--NEW CREDENTIAL & CREDENTIAL ITEM LAYOUT-->
     <string name="credential">Your Credential</string>
-    <string name="domain">Domain</string>
+    <string name="name">Name</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
 

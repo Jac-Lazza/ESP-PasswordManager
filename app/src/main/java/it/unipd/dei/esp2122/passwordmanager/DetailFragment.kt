@@ -67,19 +67,10 @@ class DetailFragment : Fragment() {
         ivBadge = view.findViewById(R.id.badge_image)
 
         val id = DetailFragmentArgs.fromBundle(requireArguments()).id
+        val name = DetailFragmentArgs.fromBundle(requireArguments()).name
         val domain = DetailFragmentArgs.fromBundle(requireArguments()).domain
         val username = DetailFragmentArgs.fromBundle(requireArguments()).username
         val password = DetailFragmentArgs.fromBundle(requireArguments()).password
-
-        var name = domain
-        try {
-            val packageManager = activity.packageManager
-            val appInfo = packageManager.getApplicationInfo(name, PackageManager.GET_META_DATA)
-            name = packageManager.getApplicationLabel(appInfo).toString()
-            ivBadge.setImageDrawable(packageManager.getApplicationIcon(appInfo))
-        }catch (e: Exception){
-            Log.d(CredentialAdapter::class.java.simpleName, "Package not found")
-        }
 
         etDetailDomain.setText(name)
         etDetailUsername.setText(username)
@@ -109,10 +100,11 @@ class DetailFragment : Fragment() {
             val updatedUsername = etDetailUsername.text.toString().trim()
             val updatedPassword = etDetailPassword.text.toString()
 
-            if(domain.isNotEmpty() && password.isNotEmpty()) {
+            if(password.isNotEmpty()) {
                 credentialViewModel.update(
                     Credential(
                         id = id,
+                        name = name,
                         domain = domain,
                         username = updatedUsername,
                         password = passwordController.encrypt(updatedPassword)
@@ -122,11 +114,6 @@ class DetailFragment : Fragment() {
                     .navigate(R.id.action_detailFragment_to_listFragment)
             }
             else{
-                if (domain.isEmpty())
-                    tilDetailDomain.error = "Domain non valido"
-                else
-                    tilDetailDomain.error = null
-
                 if (password.isEmpty())
                     tilDetailPassword.error = "Password non valida"
                 else

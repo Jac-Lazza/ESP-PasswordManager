@@ -6,7 +6,7 @@ import androidx.room.*
 @Dao
 interface CredentialDao {
 
-    @Query("SELECT * FROM credentials_table ORDER BY domain ASC")
+    @Query("SELECT * FROM credentials_table ORDER BY name COLLATE NOCASE ASC")
     fun getCredentials(): LiveData<List<Credential>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
