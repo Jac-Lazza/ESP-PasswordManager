@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">PasswordManager</string>
+    <!-- APPLICATION LABELS -->
+    <string name="app_name">Opensesame</string>
+    <string name="autofill_label">Opensesame Autofill Service</string>
+
     <!--LOGIN LAYOUT-->
     <string name="login">LOGIN</string>
     <string name="hello">Hello %1$s</string>
@@ -40,6 +43,7 @@
 
     <string name="update">UPDATE</string>
     <string name="delete">DELETE</string>
+
 
 
 </resources>

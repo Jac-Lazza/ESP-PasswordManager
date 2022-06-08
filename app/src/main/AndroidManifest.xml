@@ -18,7 +18,7 @@
         android:theme="@style/Theme.PasswordManager">
         <service
             android:name=".PMAutofillService"
-            android:label="OpenSesame Autofill Service"
+            android:label="@string/autofill_label"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_AUTOFILL_SERVICE">

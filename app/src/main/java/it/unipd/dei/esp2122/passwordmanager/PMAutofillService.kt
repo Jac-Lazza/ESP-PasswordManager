@@ -35,30 +35,17 @@ class PMAutofillService : AutofillService() {
         val structure : AssistStructure = context[context.size - 1].structure
         val parsedData = AutofillStructure(structure)
 
-        /* Test code for obtaining more informations */
-        try{
-            val packMan = applicationContext.packageManager
-            val appInfo = packMan.getApplicationInfo(parsedData.domain, 0) //Don't know what the zero stands for
-            val appName = packMan.getApplicationLabel(appInfo)
-            val appIcon = packMan.getApplicationIcon(appInfo)
-            Log.e(AS_TAG, "Got appName: ${appName} and a drawable as an application icon :-)")
-        }
-        catch(e : Exception){
-            Log.e(AS_TAG, "Wrong domain or application not installed")
-        }
-        /**/
-
         if(parsedData.autofillHintsDetected > 0){
-            println("Finally an application that uses autofill hints!")
-            /**
-             * Questo necessita di un po' di spiegazioni:
-             * Un servizio di autofill dovrebbe implementare un controllo per la ricerca di autofillHints,
-             * se li trova dovrebbe interpretarli, altrimenti dovrebbe procedere con un approccio euristico.
-             * Nella nostra esperienza, nessuna applicazione di uso comune dichiara anche un solo suggerimento
-             * per l'autofill, e dunque siamo costretti ad usare (e implementare) un approccio euristico.
-             * Dunque, per questioni di semplicità abbiamo deciso di implementare solo la parte euristica
-             * e di eseguirla anche in caso venissero trovati degli autofillHints
-             * **/
+            Log.d(AS_TAG,"Finally an application that uses autofill hints!")
+            /*
+            * Un servizio di autofill ha due modi per capire come agire nel riempimento delle view:
+            *   1) Analizza gli autofill hints messi a disposizione del client
+            *   2) Procede con un approccio euristico
+            * Dalla nostra esperienza possiamo dire che nessuna delle applicazioni che abbiamo testato
+            * mette a disposizione anche un solo autofill hint. Dunque, per rimanere con una logica
+            * di autofill abbastanza contenuta, il service utilizzerà sempre un approccio euristico
+            * (abbastanza severo aggiungerei) per capire la natura dell'activity dell'applicazione
+            * */
         }
 
         val heuristicClassification = parsedData.heuristicClassification()
@@ -94,17 +81,15 @@ class PMAutofillService : AutofillService() {
             }
             return
         }
-        else if(heuristicClassification == AutofillStructure.LOGIN_FORM_WITH_DATA){
-            val username = parsedData.editTextList.elementAt(0).text.toString()
+        else if(heuristicClassification == AutofillStructure.LOGIN_FORM_WITH_DATA){ //Login with different credentials => save them
+            /*val username = parsedData.editTextList.elementAt(0).text.toString()
             val password = parsedData.editTextList.elementAt(1).text.toString()
             Log.e(AS_TAG, "SAVE PATH TRIGGERED!")
-            Log.e(AS_TAG, "Saving login state possibility: ${username} :: ${password}")
+            Log.e(AS_TAG, "Saving login state possibility: ${username} :: ${password}")*/
             callback.onSuccess(null)
-            TODO("Next step (when it's triggered?)")
         }
         else if(heuristicClassification == AutofillStructure.REGISTER_FORM_WITH_DATA){ //Proceed to ask user to save credentials
             callback.onSuccess(null)
-            TODO("First the filling, then the saving")
         }
         else{
             callback.onSuccess(null) //For security reason: when heuristics fail, don't fill
@@ -112,8 +97,15 @@ class PMAutofillService : AutofillService() {
 
     }
 
+    /*
+    * Logica dedicata al salvataggio dei dati.
+    * Purtroppo la realizzazione di un autofill è più complicata di quanto avevamo previsto e non è
+    * l'obiettivo primario della consegna. Dunque abbiamo deciso di lasciare la parte di riempimento
+    * sviluppata con attenzione nei confronti della sicurezza dell'utente (basta vedere i controlli
+    * euristici eseguiti in AutofillStructure per determinare un login)
+    * */
     override fun onSaveRequest(request : SaveRequest, callback : SaveCallback) {
-        TODO("Not yet implemented")
+        callback.onSuccess()
     }
 
     override fun onDestroy(){
@@ -136,6 +128,4 @@ class PMAutofillService : AutofillService() {
 
     /* Classes for the service*/
     private data class Credential(val username : String, val password : String)
-
-    private data class LoginAutofill(val usernameId : AutofillId, val passwordId : AutofillId)
 }

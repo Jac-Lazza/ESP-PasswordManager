@@ -11,8 +11,8 @@ import android.widget.TextView
 
 class AutofillStructure(private val structure : AssistStructure) {
 
-    val textViewList : MutableList<AssistStructure.ViewNode> = mutableListOf()
-    val editTextList : MutableList<AssistStructure.ViewNode> = mutableListOf()
+    private val textViewList : MutableList<AssistStructure.ViewNode> = mutableListOf()
+    private val editTextList : MutableList<AssistStructure.ViewNode> = mutableListOf()
     var domain : String = ""
     var autofillHintsDetected = 0
 
@@ -28,11 +28,6 @@ class AutofillStructure(private val structure : AssistStructure) {
 
     init {
         domain = structure.activityComponent.packageName
-        /*val pm = PackageManager()
-        val appInfo = pm.getApplicationInfo(domain, 0)
-        val icon = pm.getApplicationIcon(appInfo)
-        val name = pm.getApplicationLabel(appInfo)*/
-
         if(structure.windowNodeCount > 0) {
             for (index in 0 until structure.windowNodeCount) {
                 parseNode(structure.getWindowNodeAt(index).rootViewNode) //Iterating throughout a forest of ViewNodes
