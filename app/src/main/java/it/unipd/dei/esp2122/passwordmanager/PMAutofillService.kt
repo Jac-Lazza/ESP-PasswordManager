@@ -54,11 +54,12 @@ class PMAutofillService : AutofillService() {
             Log.d(AS_TAG, "Login form detected")
             val loginStructure = parsedData.getLoginStructure()
             serviceScope.launch(){
-                val credentials = queryCredentialsForDomain(parsedData.domain)
                 Log.d(AS_TAG, "Got domain: ${parsedData.domain}")
-                if(credentials.count() > 0){
-                    val response  = FillResponse.Builder()
-                    for(cred in credentials){
+                val credentials = queryCredentialsForDomain(parsedData.domain)
+
+                val response = FillResponse.Builder()
+                for(cred in credentials){
+                    if(cred.username != ""){
                         val usernamePresentation = RemoteViews(packageName, android.R.layout.simple_list_item_1)
                         usernamePresentation.setTextViewText(android.R.id.text1, cred.username)
 
@@ -71,13 +72,8 @@ class PMAutofillService : AutofillService() {
 
                         response.addDataset(dataset.build())
                     }
-
-                    callback.onSuccess(response.build())
                 }
-                else{
-                    Log.d(AS_TAG, "No suitable credentials found in the database")
-                    callback.onSuccess(null)
-                }
+                callback.onSuccess(response.build())
             }
             return
         }
