@@ -27,25 +27,21 @@
                 android:layout_height="match_parent"
                 app:layoutManager="LinearLayoutManager" />
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/container_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/add_floating_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="32dp"
-                android:src="@drawable/ic_round_add_24"
-                android:clickable="true">
 
-            </com.google.android.material.floatingactionbutton.FloatingActionButton>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_floating_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="32dp"
+            android:background="@color/dark_blue"
+            android:src="@drawable/ic_round_add_24"
+            android:clickable="true">
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+
 
     </FrameLayout>
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.unipd.dei.esp2122.passwordmanager">
-    <permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
+    <!--Enhance package limited visibility from Android 11 (API Level 30)-->
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />

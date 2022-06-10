@@ -62,7 +62,6 @@ class NewCredentialFragment : Fragment() {
             val username = etUsername.text.toString().trim()
             val password = etPassword.text.toString()
 
-
             var name = domain
             for(elem in listInfo){
                 val appName = packageManager.getApplicationLabel(elem).toString()
