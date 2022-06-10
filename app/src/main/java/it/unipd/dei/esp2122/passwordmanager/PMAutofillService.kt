@@ -35,6 +35,11 @@ class PMAutofillService : AutofillService() {
         val structure : AssistStructure = context[context.size - 1].structure
         val parsedData = AutofillStructure(structure)
 
+        if(parsedData.domain == packageName){   //Per non autofillare l'applicazione stessa
+            callback.onSuccess(null)
+            return
+        }
+
         if(parsedData.autofillHintsDetected > 0){
             Log.d(AS_TAG,"Finally an application that uses autofill hints!")
             /*

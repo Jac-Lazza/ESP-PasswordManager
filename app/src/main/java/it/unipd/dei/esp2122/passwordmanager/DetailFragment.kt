@@ -15,28 +15,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import java.lang.Exception
 
 
 class DetailFragment : Fragment() {
 
-    //private lateinit var tilDetailDomain : TextInputLayout
-   // private lateinit var etDetailDomain : TextInputEditText
+    private lateinit var tvName : TextView
     private lateinit var tilDetailUsername : TextInputLayout
     private lateinit var etDetailUsername : TextInputEditText
     private lateinit var tilDetailPassword : TextInputLayout
     private lateinit var etDetailPassword : TextInputEditText
-    private lateinit var etDeleteButton : Button
-    private lateinit var etUpdateButton : Button
+    private lateinit var btnDelete : Button
+    private lateinit var btnUpdate : Button
+    private lateinit var btnCopyUser : Button
+    private lateinit var btnCopyPwd : Button
     private lateinit var ivBadge : ImageView
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -50,20 +50,21 @@ class DetailFragment : Fragment() {
         val activity = requireActivity()
         val toolbar : Toolbar = view.findViewById(R.id.toolbar_detail)
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-        activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true);
+        activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
 
         val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
 
-        //tilDetailDomain = view.findViewById(R.id.til_domain)
-       // etDetailDomain = view.findViewById(R.id.et_domain)
+        tvName = view.findViewById(R.id.tv_detail_name)
         tilDetailUsername = view.findViewById(R.id.til_username)
         etDetailUsername = view.findViewById(R.id.et_username)
         tilDetailPassword = view.findViewById(R.id.til_password)
         etDetailPassword = view.findViewById(R.id.et_password)
-        etDeleteButton = view.findViewById(R.id.btn_delete)
-        etUpdateButton = view.findViewById(R.id.btn_update)
+        btnDelete = view.findViewById(R.id.btn_delete)
+        btnUpdate = view.findViewById(R.id.btn_update)
+        btnCopyUser = view.findViewById(R.id.btn_username_copy)
+        btnCopyPwd = view.findViewById(R.id.btn_password_copy)
         ivBadge = view.findViewById(R.id.badge_image)
 
         val id = DetailFragmentArgs.fromBundle(requireArguments()).id
@@ -72,11 +73,19 @@ class DetailFragment : Fragment() {
         val username = DetailFragmentArgs.fromBundle(requireArguments()).username
         val password = DetailFragmentArgs.fromBundle(requireArguments()).password
 
-      //  etDetailDomain.setText(name)
+        tvName.text = name
         etDetailUsername.setText(username)
         etDetailPassword.setText(password)
 
-     /*   tilDetailUsername.setEndIconOnClickListener {
+        try {
+            val packageManager = activity.packageManager
+            val appInfo = packageManager.getApplicationInfo(domain, PackageManager.GET_META_DATA)
+            val icon = packageManager.getApplicationIcon(appInfo)
+            ivBadge.setImageDrawable(icon)
+        }
+        catch (e: Exception){ /*Intentionally left blank*/ }
+
+        btnCopyUser.setOnClickListener {
             val manager: ClipboardManager? = activity.applicationContext.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
             val clipData = ClipData.newPlainText("Username copiato",etDetailUsername.text.toString().trim())
             manager!!.setPrimaryClip(clipData)
@@ -84,23 +93,23 @@ class DetailFragment : Fragment() {
 
         }
 
-        tilDetailPassword.setEndIconOnClickListener {
+        btnCopyPwd.setOnClickListener {
             val manager: ClipboardManager? = activity.applicationContext.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
-            val clipData = ClipData.newPlainText("Password copiato",etDetailPassword.text.toString())
+            val clipData = ClipData.newPlainText("Password copiata",etDetailPassword.text.toString())
             manager!!.setPrimaryClip(clipData)
             Toast.makeText(activity.applicationContext, "Copied to the clipboard", Toast.LENGTH_LONG).show()
 
-        }*/
+        }
 
-        etDeleteButton.setOnClickListener {
+        btnDelete.setOnClickListener {
             showDialog(view, credentialViewModel, id)
         }
 
-        etUpdateButton.setOnClickListener {
+        btnUpdate.setOnClickListener {
             val updatedUsername = etDetailUsername.text.toString().trim()
             val updatedPassword = etDetailPassword.text.toString()
 
-            if(password.isNotEmpty()) {
+            if(updatedPassword.isNotEmpty()) {
                 credentialViewModel.update(
                     Credential(
                         id = id,
@@ -114,14 +123,12 @@ class DetailFragment : Fragment() {
                     .navigate(R.id.action_detailFragment_to_listFragment)
             }
             else{
-                if (password.isEmpty())
+                if (updatedPassword.isEmpty())
                     tilDetailPassword.error = "Password non valida"
                 else
                     tilDetailPassword.error = null
             }
         }
-
-
 
         return view
     }
@@ -143,7 +150,6 @@ class DetailFragment : Fragment() {
         val dialog : AlertDialog = builder.create()
         dialog.show()
     }
-
 
 }
 

@@ -50,7 +50,6 @@ class CredentialAdapter(private val passwordController: PasswordController, priv
     inner class CredentialViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tvName: TextView = itemView.findViewById(R.id.tv_name)
         private val tvUsername: TextView = itemView.findViewById(R.id.tv_username)
-        private val tvPassword: TextView = itemView.findViewById(R.id.tv_password)
         private val ivIcon: ImageView = itemView.findViewById(R.id.app_icon)
 
         fun bind(credential: Credential) {
@@ -71,7 +70,6 @@ class CredentialAdapter(private val passwordController: PasswordController, priv
             }
 
             val decryptedPwd = passwordController.decrypt(credential.password)
-            tvPassword.text = decryptedPwd
 
             itemView.setOnClickListener { view ->
                 val action = ListFragmentDirections.actionListFragmentToDetailFragment(credential.id, credential.name, credential.domain, credential.username, decryptedPwd)

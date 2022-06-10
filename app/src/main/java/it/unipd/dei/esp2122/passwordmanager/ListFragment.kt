@@ -65,13 +65,11 @@ class ListFragment : Fragment() {
         setHasOptionsMenu(true)
 
         credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
+
         val preferences = requireActivity().getSharedPreferences(requireActivity().packageName, Context.MODE_PRIVATE)
         adapter = CredentialAdapter(PasswordController(preferences), requireContext().packageManager)
         recyclerView.adapter = adapter
 
-        // Add an observer on the LiveData returned by getAlphabetizedWords.
-        // The onChanged() method fires when the observed data changes and the activity is
-        // in the foreground.
         credentialViewModel.allCredentials.observe(viewLifecycleOwner, Observer { credential ->
                 credential?.let { adapter.setCredentials(it) }
         })
@@ -79,6 +77,7 @@ class ListFragment : Fragment() {
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_newCredentialFragment)
         }
+
         return view
     }
 

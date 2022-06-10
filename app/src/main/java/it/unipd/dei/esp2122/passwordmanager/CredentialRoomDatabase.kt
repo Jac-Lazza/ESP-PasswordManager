@@ -28,31 +28,6 @@ abstract class CredentialRoomDatabase : RoomDatabase() {
                 instance
             }
         }
-        /*
-        private class CredentialDatabaseCallback(
-            private val scope: CoroutineScope
-        ) : RoomDatabase.Callback() {
-            /**
-             * Override the onOpen method to populate the database.
-             * For this sample, we clear the database every time it is created or opened.
-             */
-            override fun onOpen(db: SupportSQLiteDatabase) {
-                super.onOpen(db)
-                // If you want to keep the data through app restarts,
-                // comment out the following line.
-                INSTANCE?.let { database ->
-                    scope.launch(Dispatchers.IO) {
-                        populateDatabase(database.wordDao())
-                    }
-                }
-            }
-        }
-
-
-        fun populateDatabase(credentialDao: CredentialDao) {
-            var credential = Credential(0, "Instagram", "avjack_", "PIPPO")
-            credentialDao.insert(credential)
-        }*/
     }
 
 }
