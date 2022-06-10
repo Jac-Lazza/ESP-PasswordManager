@@ -29,8 +29,8 @@ import java.lang.Exception
 
 class DetailFragment : Fragment() {
 
-    private lateinit var tilDetailDomain : TextInputLayout
-    private lateinit var etDetailDomain : TextInputEditText
+    //private lateinit var tilDetailDomain : TextInputLayout
+   // private lateinit var etDetailDomain : TextInputEditText
     private lateinit var tilDetailUsername : TextInputLayout
     private lateinit var etDetailUsername : TextInputEditText
     private lateinit var tilDetailPassword : TextInputLayout
@@ -56,8 +56,8 @@ class DetailFragment : Fragment() {
         val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
 
-        tilDetailDomain = view.findViewById(R.id.til_domain)
-        etDetailDomain = view.findViewById(R.id.et_domain)
+        //tilDetailDomain = view.findViewById(R.id.til_domain)
+       // etDetailDomain = view.findViewById(R.id.et_domain)
         tilDetailUsername = view.findViewById(R.id.til_username)
         etDetailUsername = view.findViewById(R.id.et_username)
         tilDetailPassword = view.findViewById(R.id.til_password)
@@ -72,7 +72,7 @@ class DetailFragment : Fragment() {
         val username = DetailFragmentArgs.fromBundle(requireArguments()).username
         val password = DetailFragmentArgs.fromBundle(requireArguments()).password
 
-        etDetailDomain.setText(name)
+      //  etDetailDomain.setText(name)
         etDetailUsername.setText(username)
         etDetailPassword.setText(password)
 

@@ -58,7 +58,7 @@ class CredentialAdapter(private val passwordController: PasswordController, priv
             if(icon != null)
                 ivIcon.setImageDrawable(icon)
             else
-                ivIcon.setImageResource(R.drawable.internet)
+                ivIcon.setImageResource(R.drawable.application)
 
             tvName.text = credential.name
 

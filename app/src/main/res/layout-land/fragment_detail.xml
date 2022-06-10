@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerVertical="true"
+    android:backgroundTint="@color/white"
     tools:context=".DetailFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -19,56 +20,33 @@
 
     <!--YOUR CREDENTIAL TEXTVIEW-->
     <TextView
-        android:id="@+id/tv_credential"
+        android:id="@+id/tv_domain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/credential"
-        android:textSize="35sp"
+        android:text="DA SETTARE"
         android:textColor="@color/dark_blue"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal1"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical1"
+        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_detail"
-        />
+        app:layout_constraintVertical_bias="0.36" />
 
     <!--BADGE IMAGE-->
     <ImageView
         android:id="@+id/badge_image_land"
-        android:layout_width="87dp"
-        android:layout_height="65dp"
+        android:layout_width="65dp"
+        android:layout_height="43dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline_vertical1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_credential"
+        app:layout_constraintTop_toBottomOf="@+id/tv_domain"
         app:srcCompat="@drawable/id_card"
         app:layout_constraintVertical_bias="0.1"
         />
 
-    <!--DOMAIN-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_domain"
-        style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_detail"
-        android:textColor="@color/dark_blue"
-        android:hint="@string/new_domain"
-        app:startIconDrawable="@drawable/web_development"
-        app:layout_constraintVertical_bias="0.6"
-        >
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_domain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textUri"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <!--USERNAME-->
     <com.google.android.material.textfield.TextInputLayout
@@ -77,15 +55,15 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="70dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_detail"
-        app:layout_constraintBaseline_creator="@+id/guideline_horizontal1"
         android:textColor="@color/dark_blue"
         android:hint="@string/new_username"
         app:startIconDrawable="@drawable/user"
+        app:layout_constraintVertical_bias="0.25"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -97,6 +75,18 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!--USERNAME COPY BUTTON-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_username_copy"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/files"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/til_username"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_detail"
+        app:layout_constraintVertical_bias="0.27" />
+
     <!--PASSWORD-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_password"
@@ -104,7 +94,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
@@ -114,7 +104,7 @@
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
         app:errorEnabled="true"
-        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintVertical_bias="0.3"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -126,6 +116,18 @@
 
             />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <!--PASSWORD COPY BUTTON-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_password_copy"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/files"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/til_password"
+        app:layout_constraintTop_toBottomOf="@+id/btn_username_copy"
+        app:layout_constraintVertical_bias="0.41" />
 
 
     <!--UPDATE BUTTON-->
@@ -141,7 +143,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal1"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.4" />
 
     <!--DELETE BUTTON-->
     <androidx.appcompat.widget.AppCompatButton
@@ -156,7 +158,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical1"
-        app:layout_constraintVertical_bias="0.65"
+        app:layout_constraintVertical_bias="0.8"
         />
 
     <!--VERTICAL GUIDELINE-->

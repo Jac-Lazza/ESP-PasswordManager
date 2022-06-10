@@ -40,9 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="32dp"
-                android:backgroundTint="@color/dark_blue"
                 android:src="@drawable/ic_round_add_24"
-                app:rippleColor="@color/white"
                 android:clickable="true">
 
             </com.google.android.material.floatingactionbutton.FloatingActionButton>

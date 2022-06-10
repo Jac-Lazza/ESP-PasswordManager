@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/white"
     tools:context=".DetailFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -18,17 +19,17 @@
 
     <!--YOUR CREDENTIAL TEXTVIEW-->
     <TextView
-        android:id="@+id/tv_credential"
+        android:id="@+id/tv_domain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/credential"
-        android:textSize="30sp"
+        android:text="DA SETTARE"
         android:textColor="@color/dark_blue"
-        app:layout_constraintBottom_toTopOf="@+id/til_domain"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/badge_image"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.23"
 
         />
 
@@ -38,42 +39,13 @@
         android:layout_width="87dp"
         android:layout_height="65dp"
         android:layout_weight="1"
-        app:layout_constraintEnd_toStartOf="@+id/tv_credential"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/til_domain"
         app:srcCompat="@drawable/id_card"
-        app:layout_constraintVertical_bias="0.65"/>
-
-
-    <!--DOMAIN-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_domain"
-        style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/til_username"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_domain"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        android:textColor="@color/dark_blue"
-        android:hint="@string/name"
-        app:startIconDrawable="@drawable/web_development"
-        app:errorEnabled="true"
-        >
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.23" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_domain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:maxLines="1"
-            android:enabled="false"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <!--USERNAME-->
     <com.google.android.material.textfield.TextInputLayout
@@ -82,11 +54,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45"
         android:textColor="@color/dark_blue"
         android:hint="@string/username"
         app:startIconDrawable="@drawable/user"
@@ -102,6 +75,18 @@
         />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!--USERNAME COPY BUTTON-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_username_copy"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/files"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/til_username"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_detail"
+        app:layout_constraintVertical_bias="0.39" />
+
 
     <!--PASSWORD-->
     <com.google.android.material.textfield.TextInputLayout
@@ -110,12 +95,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_username"
-        app:layout_constraintVertical_bias="0.01"
+        app:layout_constraintVertical_bias="0.05"
         android:textColor="@color/dark_blue"
         android:hint="@string/password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
@@ -128,11 +113,22 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:maxLines="1"
-
         />
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!--PASSWORD COPY BUTTON-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_password_copy"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/files"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toEndOf="@id/til_password"
+        app:layout_constraintTop_toBottomOf="@+id/btn_username_copy"
+        app:layout_constraintVertical_bias="0.17" />
 
     <!--UPDATE BUTTON-->
     <androidx.appcompat.widget.AppCompatButton
@@ -162,6 +158,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_password"
-        app:layout_constraintVertical_bias="0.65" />
+        app:layout_constraintVertical_bias="0.6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
