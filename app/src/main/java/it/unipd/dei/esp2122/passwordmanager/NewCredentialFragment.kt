@@ -37,10 +37,6 @@ class NewCredentialFragment : Fragment() {
         activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
 
-
-        val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
-        val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
-
         tilDomain = view.findViewById(R.id.til_new_domain)
         etDomain = view.findViewById(R.id.et_new_domain)
         etUsername = view.findViewById(R.id.et_new_username)
@@ -48,6 +44,13 @@ class NewCredentialFragment : Fragment() {
         etPassword = view.findViewById(R.id.et_new_password)
         btnAddCredential = view.findViewById(R.id.btn_add)
         btnGeneratePwd = view.findViewById(R.id.btn_generate)
+
+
+        val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
+        val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
+
+        val packageManager = requireContext().packageManager
+        val listInfo = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
 
         btnGeneratePwd.setOnClickListener {
             val generatedPwd = passwordController.generatePassword()
@@ -59,8 +62,7 @@ class NewCredentialFragment : Fragment() {
             val username = etUsername.text.toString().trim()
             val password = etPassword.text.toString()
 
-            val packageManager = requireContext().packageManager
-            val listInfo = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+
             var name = domain
             for(elem in listInfo){
                 val appName = packageManager.getApplicationLabel(elem).toString()
