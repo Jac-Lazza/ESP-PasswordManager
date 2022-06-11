@@ -31,7 +31,6 @@
 
 
 
-
     <string name="delete_dialog_msg">Sei sicuro di eliminare la credenziale?</string>
     <string name="deleteAll_dialog_msg">Sei sicuro di eliminare TUTTE le credenziali?</string>
     <string name="DELETE">DELETE</string>
@@ -43,6 +42,11 @@
     <string name="update">UPDATE</string>
     <string name="delete">DELETE</string>
 
-
+    <!--CHANGE MASTER LAYOUT-->
+    <string name="change_master">Change master password</string>
+    <string name="old_master">Old password</string>
+    <string name="new_master">New password</string>
+    <string name="confirm_new_master">Confirm new password</string>
+    <string name="change">CHANGE</string>
 
 </resources>

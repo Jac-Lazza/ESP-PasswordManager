@@ -14,12 +14,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/welcome"
-        android:textSize="40sp"
         android:textColor="@color/dark_blue"
+        android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal1"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical1"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35" />
 
     <!-- LAMP IMAGE-->
     <ImageView
@@ -48,7 +50,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6"
+        app:layout_constraintVertical_bias="0.4"
         android:textColor="@color/dark_blue"
         android:hint="@string/insert_name"
         app:startIconDrawable="@drawable/user"
@@ -74,13 +76,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_insert_name"
         app:layout_constraintBaseline_creator="@+id/guideline_horizontal1"
         android:textColor="@color/dark_blue"
         android:hint="@string/insert_password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
-        app:errorEnabled="true">
+        app:errorEnabled="true"
+        app:layout_constraintVertical_bias="0.01">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_insert_pwd"
@@ -103,8 +106,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
-        app:layout_constraintTop_toTopOf="@id/guideline_horizontal1"
-        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintTop_toBottomOf="@id/til_insert_pwd"
+        app:layout_constraintVertical_bias="0.01"
         android:textColor="@color/dark_blue"
         android:hint="@string/confirm_password"
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
@@ -147,6 +150,7 @@
         app:layout_constraintStart_toEndOf="@id/guideline_vertical1"
         app:layout_constraintEnd_toEndOf="parent"
         android:progressDrawable="@drawable/custom_progressbar"
+        app:layout_constraintVertical_bias="0.3"
         />
 
     <!--VERTICAL GUIDELINE-->

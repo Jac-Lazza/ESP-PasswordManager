@@ -28,7 +28,6 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal1"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical1"
-        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_detail"
         app:layout_constraintVertical_bias="0.36" />
@@ -36,8 +35,8 @@
     <!--BADGE IMAGE-->
     <ImageView
         android:id="@+id/badge_image"
-        android:layout_width="65dp"
-        android:layout_height="43dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline_vertical1"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,11 +80,9 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/files"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/til_username"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/til_username"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_detail"
-        app:layout_constraintVertical_bias="0.27" />
+        app:layout_constraintStart_toEndOf="@id/til_username" />
 
     <!--PASSWORD-->
     <com.google.android.material.textfield.TextInputLayout
@@ -104,7 +101,7 @@
         app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
         app:endIconMode="password_toggle"
         app:errorEnabled="true"
-        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintVertical_bias="0.4"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -123,11 +120,9 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/files"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/til_password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/til_password"
-        app:layout_constraintTop_toBottomOf="@+id/btn_username_copy"
-        app:layout_constraintVertical_bias="0.41" />
+        app:layout_constraintStart_toEndOf="@id/til_password" />
 
 
     <!--UPDATE BUTTON-->
