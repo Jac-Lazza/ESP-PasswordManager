@@ -19,5 +19,9 @@
         android:title="Enable Autofill"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/change_master"
+        android:title="Change Master Password"
+        app:showAsAction="never"/>
 
 </menu>

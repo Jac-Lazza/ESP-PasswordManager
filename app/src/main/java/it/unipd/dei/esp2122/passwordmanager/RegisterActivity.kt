@@ -43,7 +43,7 @@ class RegisterActivity : AppCompatActivity() {
             val confirmPwd = etConfirmPwd.text.toString()
             val strength = passwordController.strength(insertPwd)
 
-            if ((strength != PasswordController.PASSWORD_WEAK) && (insertPwd == confirmPwd)){
+            if ((strength > PasswordController.PASSWORD_WEAK) && (insertPwd == confirmPwd)){
                 val editor = preferences.edit()
                 editor.putString(getString(R.string.KEY_NAME), name)
                 val digestPwd = passwordController.hash(insertPwd)
@@ -62,7 +62,7 @@ class RegisterActivity : AppCompatActivity() {
                 finish()
             }
             else{
-                if(strength == PasswordController.PASSWORD_WEAK)
+                if(strength <= PasswordController.PASSWORD_WEAK)
                     tilInsertPwd.error = "Password debole!"
                 else
                     tilInsertPwd.error = null

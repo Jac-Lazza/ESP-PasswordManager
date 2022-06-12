@@ -30,7 +30,6 @@
     <string name="password">Password</string>
 
 
-
     <string name="delete_dialog_msg">Sei sicuro di eliminare la credenziale?</string>
     <string name="deleteAll_dialog_msg">Sei sicuro di eliminare TUTTE le credenziali?</string>
     <string name="DELETE">DELETE</string>

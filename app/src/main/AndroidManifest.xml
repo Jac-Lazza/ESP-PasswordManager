@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.unipd.dei.esp2122.passwordmanager">
-
-    <!--Enhance package limited visibility from Android 11 (API Level 30)-->
+    <!-- Enhance package limited visibility from Android 11 (API Level 30) -->
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />
@@ -16,15 +15,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PasswordManager">
+        <activity
+            android:name=".ChangeMasterActivity"
+            android:exported="false" />
+
         <service
             android:name=".PMAutofillService"
-            android:label="@string/autofill_label"
             android:enabled="true"
             android:exported="true"
+            android:label="@string/autofill_label"
             android:permission="android.permission.BIND_AUTOFILL_SERVICE">
             <intent-filter>
-                <action android:name="android.service.autofill.AutofillService"/>
-
+                <action android:name="android.service.autofill.AutofillService" />
             </intent-filter>
         </service>
 
@@ -44,6 +46,5 @@
             android:name=".RegisterActivity"
             android:exported="false" />
     </application>
-
 
 </manifest>

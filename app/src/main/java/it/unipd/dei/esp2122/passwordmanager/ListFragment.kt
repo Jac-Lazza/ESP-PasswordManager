@@ -49,6 +49,11 @@ class ListFragment : Fragment() {
                 val autofillServiceIntent = Intent(Settings.ACTION_REQUEST_SET_AUTOFILL_SERVICE)
                 autofillServiceIntent.data = Uri.parse("package:${requireActivity().packageName}")
                 startActivity(autofillServiceIntent)
+                /*per controllare se l'autofill è attivo metodo hasEnabledAutofillService() della classe AutofillManager */
+            }
+            R.id.change_master -> {
+                val changeMasterIntent = Intent(context, ChangeMasterActivity::class.java)
+                startActivity(changeMasterIntent)
             }
         }
 
