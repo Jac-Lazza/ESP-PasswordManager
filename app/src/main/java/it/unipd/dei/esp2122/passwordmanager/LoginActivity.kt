@@ -2,16 +2,14 @@ package it.unipd.dei.esp2122.passwordmanager
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import it.unipd.dei.esp2122.passwordmanager.RegisterActivity.Companion.KEY_MASTER_PASSWORD
+import it.unipd.dei.esp2122.passwordmanager.RegisterActivity.Companion.KEY_NAME
 
 class LoginActivity : AppCompatActivity() {
 
@@ -24,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val preferences = getSharedPreferences(packageName, Context.MODE_PRIVATE)
-        val masterPassword = preferences.getString(getString(R.string.KEY_MASTER_PASSWORD), null)
+        val masterPassword = preferences.getString(KEY_MASTER_PASSWORD, null)
 
         if (masterPassword == null){
             val intent = Intent(applicationContext, RegisterActivity::class.java)
@@ -39,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
         etLoginPwd = findViewById(R.id.et_login_pwd)
         btnLogin = findViewById(R.id.btn_login)
 
-        val name = preferences.getString(getString(R.string.KEY_NAME), null)
+        val name = preferences.getString(KEY_NAME, "")
         tvHello.text = getString(R.string.hello, name)
 
         val passwordController = PasswordController(preferences)
@@ -53,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }
             else
-                tilLoginPwd.error = "Password Errata"
+                tilLoginPwd.error = getString(R.string.wrong_pwd)
         }
 
     }

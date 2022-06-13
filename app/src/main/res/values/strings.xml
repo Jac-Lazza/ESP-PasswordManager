@@ -1,7 +1,22 @@
 <resources>
     <!-- APPLICATION LABELS -->
-    <string name="app_name">Opensesame</string>
-    <string name="autofill_label">Opensesame Autofill Service</string>
+    <string name="app_name">OpenSesame</string>
+    <string name="autofill_label">OpenSesame Autofill Service</string>
+
+    <!--ERROR MESSAGES-->
+    <string name="empty_pwd">Empty Password</string>
+    <string name="wrong_master">Wrong Master Password</string>
+    <string name="pwd_do_not_match">Passwords do not match</string>
+    <string name="weak_pwd">Weak Password</string>
+    <string name="wrong_pwd">Wrong Password</string>
+    <string name="empty_domain">Empty Domain</string>
+
+    <string name="copied_clipboard">Copied to the clipboard</string>
+    <string name="enabled_autofill">Autofill already enabled</string>
+    <string name="delete_dialog_msg">Are you sure you want to delete your credential?</string>
+    <string name="deleteAll_dialog_msg">Are you sure you want to delete ALL your credentials?</string>
+    <string name="DELETE">DELETE</string>
+    <string name="CANCEL">Cancel</string>
 
     <!--LOGIN LAYOUT-->
     <string name="login">LOGIN</string>
@@ -12,9 +27,8 @@
     <string name="register">REGISTER</string>
     <string name="welcome">Welcome</string>
     <string name="insert_name">Insert Name</string>
-    <string name="create_password">Create Password</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="desc_floating_button">Add new password</string>
+
 
     <!--NEW CREDENTIAL LAYOUT-->
     <string name="add">ADD</string>
@@ -28,16 +42,6 @@
     <string name="name">Name</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-
-
-    <string name="delete_dialog_msg">Sei sicuro di eliminare la credenziale?</string>
-    <string name="deleteAll_dialog_msg">Sei sicuro di eliminare TUTTE le credenziali?</string>
-    <string name="DELETE">DELETE</string>
-    <string name="CANCEL">CANCEL</string>
-
-    <string name="KEY_MASTER_PASSWORD">master_password</string>
-    <string name="KEY_NAME">name</string>
-
     <string name="update">UPDATE</string>
     <string name="delete">DELETE</string>
 

@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import it.unipd.dei.esp2122.passwordmanager.RegisterActivity.Companion.KEY_MASTER_PASSWORD
 
 class ChangeMasterActivity : AppCompatActivity() {
 
@@ -49,25 +50,25 @@ class ChangeMasterActivity : AppCompatActivity() {
             val oldMaster = etOldMaster.text.toString()
             val newMaster = etNewMaster.text.toString()
             val confirmMaster = etConfirmMaster.text.toString()
-            val masterHash = preferences.getString("master_password",null)
+            val masterHash = preferences.getString(KEY_MASTER_PASSWORD, null)
             val insertMasterHash = passwordController.hash(oldMaster)
 
             if((masterHash == insertMasterHash) && (newMaster == confirmMaster) && (passwordController.strength(newMaster) > PasswordController.PASSWORD_WEAK)){
                 tilNewMaster.error = null
                 val newHash = passwordController.hash(newMaster)
                 val editor = preferences.edit()
-                editor.putString("master_password",newHash)
+                editor.putString(KEY_MASTER_PASSWORD, newHash)
                 editor.apply()
                 finish()
             }
             else{
                 when {
-                    newMaster.isEmpty() -> tilNewMaster.error = "Empty password"
-                    passwordController.strength(newMaster) == PasswordController.PASSWORD_WEAK -> tilNewMaster.error = "Weak password"
+                    newMaster.isEmpty() -> tilNewMaster.error = getString(R.string.empty_pwd)
+                    passwordController.strength(newMaster) == PasswordController.PASSWORD_WEAK -> tilNewMaster.error = getString(R.string.weak_pwd)
                     else -> tilNewMaster.error = null
                 }
-                tilOldMaster.error = if(masterHash == insertMasterHash) null else "Wrong master password"
-                tilConfirmMaster.error = if(newMaster == confirmMaster) null else "Passwords do not match"
+                tilOldMaster.error = if(masterHash == insertMasterHash) null else getString(R.string.wrong_master)
+                tilConfirmMaster.error = if(newMaster == confirmMaster) null else getString(R.string.pwd_do_not_match)
             }
 
         }

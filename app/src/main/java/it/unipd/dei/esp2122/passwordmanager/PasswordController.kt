@@ -19,13 +19,12 @@ class PasswordController(private val preferences : SharedPreferences){
         private const val SALT_KEY = "PASSWORD_CONTROLLER_SALT_KEY"
         private const val SECRET_KEY_ALIAS = "SECRET_KEY_ALIAS"
 
-        //ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~
         const val ALPHABET_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         const val ALPHABET_LOWER = "abcdefghijklmnopqrstuvwxyz"
         const val ALPHABET_DIGIT = "0123456789"
         const val ALPHABET_SPECIAL = " !\"#\$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 
-        //Let's think if it's to keep
+
         const val PASSWORD_WEAK = 33
         const val PASSWORD_MEDIUM = 66
         const val PASSWORD_HARD = 100

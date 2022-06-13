@@ -1,7 +1,6 @@
 package it.unipd.dei.esp2122.passwordmanager
 
 import android.app.assist.AssistStructure
-import android.content.pm.PackageManager
 import android.text.InputType
 import android.util.Log
 import android.view.View

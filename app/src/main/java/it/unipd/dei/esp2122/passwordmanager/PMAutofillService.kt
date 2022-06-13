@@ -1,22 +1,14 @@
 package it.unipd.dei.esp2122.passwordmanager
 
-import android.app.Service
 import android.app.assist.AssistStructure
 import android.content.Context
-import android.content.Intent
 import android.os.CancellationSignal
-import android.os.IBinder
 import android.service.autofill.*
-import android.text.InputType
 import android.util.Log
-import android.view.View
-import android.view.autofill.AutofillId
 import android.view.autofill.AutofillValue
 import android.widget.RemoteViews
 import kotlinx.coroutines.*
 import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class PMAutofillService : AutofillService() {
 
@@ -83,10 +75,6 @@ class PMAutofillService : AutofillService() {
             return
         }
         else if(heuristicClassification == AutofillStructure.LOGIN_FORM_WITH_DATA){ //Login with different credentials => save them
-            /*val username = parsedData.editTextList.elementAt(0).text.toString()
-            val password = parsedData.editTextList.elementAt(1).text.toString()
-            Log.e(AS_TAG, "SAVE PATH TRIGGERED!")
-            Log.e(AS_TAG, "Saving login state possibility: ${username} :: ${password}")*/
             callback.onSuccess(null)
         }
         else if(heuristicClassification == AutofillStructure.REGISTER_FORM_WITH_DATA){ //Proceed to ask user to save credentials

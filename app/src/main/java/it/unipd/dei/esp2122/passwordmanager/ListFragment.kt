@@ -51,7 +51,7 @@ class ListFragment : Fragment() {
             R.id.autofill -> {
                 val am = getSystemService(requireContext(), AutofillManager::class.java)
                 if(am!!.hasEnabledAutofillServices()){
-                    Toast.makeText(requireContext(), "Autofill already enabled", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), getString(R.string.enabled_autofill), Toast.LENGTH_LONG).show()
                 }
                 else {
                     val autofillServiceIntent = Intent(Settings.ACTION_REQUEST_SET_AUTOFILL_SERVICE)
