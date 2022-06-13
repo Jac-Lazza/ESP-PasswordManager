@@ -62,13 +62,14 @@ class RegisterActivity : AppCompatActivity() {
                 finish()
             }
             else{
-                if(strength <= PasswordController.PASSWORD_WEAK)
-                    tilInsertPwd.error = "Password debole!"
-                else
-                    tilInsertPwd.error = null
+                when {
+                    insertPwd.isEmpty() -> tilInsertPwd.error = "Empty password"
+                    strength == PasswordController.PASSWORD_WEAK -> tilInsertPwd.error = "Weak password"
+                    else -> tilInsertPwd.error = null
+                }
 
                 if(insertPwd != confirmPwd)
-                    tilConfirmPwd.error = "Password non coincidenti"
+                    tilConfirmPwd.error = "Passwords do not match"
                 else
                     tilConfirmPwd.error = null
             }

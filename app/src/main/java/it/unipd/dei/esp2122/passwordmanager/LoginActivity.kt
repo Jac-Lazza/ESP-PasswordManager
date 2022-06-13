@@ -48,7 +48,6 @@ class LoginActivity : AppCompatActivity() {
             val loginPwd = etLoginPwd.text.toString()
             val digestPwd = passwordController.hash(loginPwd)
             if (digestPwd == masterPassword){
-                Toast.makeText(applicationContext, "Password corretta", Toast.LENGTH_LONG).show()
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
                 finish()

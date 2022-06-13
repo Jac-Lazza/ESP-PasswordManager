@@ -8,6 +8,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.*
+import android.view.autofill.AutofillManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -17,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat.getSystemService
 
 
 class ListFragment : Fragment() {
@@ -25,7 +28,7 @@ class ListFragment : Fragment() {
     private lateinit var adapter : CredentialAdapter
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.toolbar_items, menu)
+        inflater.inflate(R.menu.toolbar_main, menu)
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -33,8 +36,8 @@ class ListFragment : Fragment() {
                 return false
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.filter.filter(newText)
+            override fun onQueryTextChange(text: String?): Boolean {
+                adapter.filter.filter(text)
                 return false
              }
 
@@ -46,10 +49,16 @@ class ListFragment : Fragment() {
         when (item.itemId) {
             R.id.action_delete_all -> showDialog(credentialViewModel)
             R.id.autofill -> {
-                val autofillServiceIntent = Intent(Settings.ACTION_REQUEST_SET_AUTOFILL_SERVICE)
-                autofillServiceIntent.data = Uri.parse("package:${requireActivity().packageName}")
-                startActivity(autofillServiceIntent)
-                /*per controllare se l'autofill è attivo metodo hasEnabledAutofillService() della classe AutofillManager */
+                val am = getSystemService(requireContext(), AutofillManager::class.java)
+                if(am!!.hasEnabledAutofillServices()){
+                    Toast.makeText(requireContext(), "Autofill already enabled", Toast.LENGTH_LONG).show()
+                }
+                else {
+                    val autofillServiceIntent = Intent(Settings.ACTION_REQUEST_SET_AUTOFILL_SERVICE)
+                    autofillServiceIntent.data =
+                        Uri.parse("package:${requireActivity().packageName}")
+                    startActivity(autofillServiceIntent)
+                }
             }
             R.id.change_master -> {
                 val changeMasterIntent = Intent(context, ChangeMasterActivity::class.java)
