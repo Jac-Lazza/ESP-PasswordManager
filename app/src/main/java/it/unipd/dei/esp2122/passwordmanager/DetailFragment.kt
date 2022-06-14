@@ -8,7 +8,6 @@ import android.content.Context.CLIPBOARD_SERVICE
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -89,7 +88,7 @@ class DetailFragment : Fragment() {
             val manager: ClipboardManager? = activity.applicationContext.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
             val clipData = ClipData.newPlainText("Username copiato",etDetailUsername.text.toString().trim())
             manager!!.setPrimaryClip(clipData)
-            Toast.makeText(activity.applicationContext, "Copied to the clipboard", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), getString(R.string.copied_clipboard), Toast.LENGTH_LONG).show()
 
         }
 
@@ -97,7 +96,7 @@ class DetailFragment : Fragment() {
             val manager: ClipboardManager? = activity.applicationContext.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
             val clipData = ClipData.newPlainText("Password copiata",etDetailPassword.text.toString())
             manager!!.setPrimaryClip(clipData)
-            Toast.makeText(activity.applicationContext, "Copied to the clipboard", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), getString(R.string.copied_clipboard), Toast.LENGTH_LONG).show()
 
         }
 
@@ -124,7 +123,7 @@ class DetailFragment : Fragment() {
             }
             else{
                 if (updatedPassword.isEmpty())
-                    tilDetailPassword.error = "Password non valida"
+                    tilDetailPassword.error = getString(R.string.empty_pwd)
                 else
                     tilDetailPassword.error = null
             }

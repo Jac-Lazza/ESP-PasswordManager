@@ -12,7 +12,10 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class RegisterActivity : AppCompatActivity() {
-
+    companion object{
+        const val KEY_MASTER_PASSWORD = "master_password"
+        const val KEY_NAME = "NAME"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -45,9 +48,9 @@ class RegisterActivity : AppCompatActivity() {
 
             if ((strength > PasswordController.PASSWORD_WEAK) && (insertPwd == confirmPwd)){
                 val editor = preferences.edit()
-                editor.putString(getString(R.string.KEY_NAME), name)
+                editor.putString(KEY_NAME, name)
                 val digestPwd = passwordController.hash(insertPwd)
-                editor.putString(getString(R.string.KEY_MASTER_PASSWORD), digestPwd)
+                editor.putString(KEY_MASTER_PASSWORD, digestPwd)
                 editor.apply()
 
                 val intent = Intent(applicationContext, MainActivity::class.java)
@@ -62,13 +65,14 @@ class RegisterActivity : AppCompatActivity() {
                 finish()
             }
             else{
-                if(strength <= PasswordController.PASSWORD_WEAK)
-                    tilInsertPwd.error = "Password debole!"
-                else
-                    tilInsertPwd.error = null
+                when {
+                    insertPwd.isEmpty() -> tilInsertPwd.error = getString(R.string.empty_pwd)
+                    strength == PasswordController.PASSWORD_WEAK -> tilInsertPwd.error = getString(R.string.weak_pwd)
+                    else -> tilInsertPwd.error = null
+                }
 
                 if(insertPwd != confirmPwd)
-                    tilConfirmPwd.error = "Password non coincidenti"
+                    tilConfirmPwd.error = getString(R.string.pwd_do_not_match)
                 else
                     tilConfirmPwd.error = null
             }

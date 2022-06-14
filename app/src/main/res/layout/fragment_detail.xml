@@ -33,13 +33,13 @@
 
         />
 
-    <!--BADGE IMAGE-->
+    <!--DOMAIN IMAGE-->
     <ImageView
         android:id="@+id/badge_image"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_weight="1"
-        app:srcCompat="@drawable/id_card"
+        app:srcCompat="@drawable/application"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_detail_name"

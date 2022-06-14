@@ -5,23 +5,23 @@
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
         android:iconTint="@color/white"
-        android:title="Search"
+        android:title="@string/search"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item
         android:id="@+id/action_delete_all"
-        android:title="Delete All"
+        android:title="@string/delete_all"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/autofill"
-        android:title="Enable Autofill"
+        android:title="@string/enable_autofill"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/change_master"
-        android:title="Change Master Password"
+        android:title="@string/change_master"
         app:showAsAction="never"/>
 
 </menu>

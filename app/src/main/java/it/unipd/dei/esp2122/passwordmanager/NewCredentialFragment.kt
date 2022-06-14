@@ -86,12 +86,12 @@ class NewCredentialFragment : Fragment() {
             }
             else{
                 if (domain.isEmpty())
-                    tilDomain.error = "Domain non valido"
+                    tilDomain.error = getString(R.string.empty_domain)
                 else
                     tilDomain.error = null
 
                 if (password.isEmpty())
-                    tilPassword.error = "Password non valida"
+                    tilPassword.error = getString(R.string.empty_pwd)
                 else
                     tilPassword.error = null
             }

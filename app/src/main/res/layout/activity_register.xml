@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.30"/>
 
-    <!--IMAGE-->
+    <!--LAMP IMAGE-->
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="94dp"
@@ -34,6 +34,7 @@
         app:layout_constraintVertical_bias="0.35"
         app:srcCompat="@drawable/genie_lamp" />
 
+    <!--INSERT NAME-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_insert_name"
         style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
