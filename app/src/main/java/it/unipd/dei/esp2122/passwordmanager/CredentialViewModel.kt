@@ -7,6 +7,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/*
+ViewModel interagisce con la Repository per fornire alla View i dati necessari in un LiveData, cioè un contenitore osservabile
+da cui si è notificati ogni volta che il contenuto cambia
+*/
 class CredentialViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: CredentialRepository
@@ -18,6 +22,7 @@ class CredentialViewModel(application: Application) : AndroidViewModel(applicati
         allCredentials = repository.allCredentials
     }
 
+    //Funzioni di accesso alla Repository, lanciate su un thread separato attraverso le Coroutine
     fun insert(credential: Credential) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(credential)
     }

@@ -13,17 +13,15 @@ import androidx.navigation.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
+/*
+NewCredentialFragment permette di aggiungere una nuova credenziale specificando il nome, il nome utente (non obbligatorio) e la
+password. Se il nome della credenziale inserita coincide con il nome di un'applicazione installata nel dispositivo, viene collegata
+al relativo package nel database.
+*/
 class NewCredentialFragment : Fragment() {
 
-    private lateinit var tilDomain : TextInputLayout
-    private lateinit var etDomain : TextInputEditText
-    private lateinit var etUsername : TextInputEditText
-    private lateinit var tilPassword : TextInputLayout
-    private lateinit var etPassword : TextInputEditText
-    private lateinit var btnAddCredential : Button
-    private lateinit var btnGeneratePwd : Button
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        //Impostazione della freccia per tornare indietro nel back stack
         if(item.itemId == android.R.id.home)
             requireActivity().onBackPressed()
         return super.onOptionsItemSelected(item)
@@ -33,27 +31,27 @@ class NewCredentialFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_new_credential, container, false)
         val activity = requireActivity()
         val toolbar : Toolbar = view.findViewById(R.id.toolbar_new_credential)
-        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-        activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        setHasOptionsMenu(true)
 
-        tilDomain = view.findViewById(R.id.til_new_domain)
-        etDomain = view.findViewById(R.id.et_new_domain)
-        etUsername = view.findViewById(R.id.et_new_username)
-        tilPassword = view.findViewById(R.id.til_new_password)
-        etPassword = view.findViewById(R.id.et_new_password)
-        btnAddCredential = view.findViewById(R.id.btn_add)
-        btnGeneratePwd = view.findViewById(R.id.btn_generate)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)     //Impostazione della toolbar
+        activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)     //Viene mostrata l'icona della freccia per tornare indietro
+        setHasOptionsMenu(true)     //Il fragment contribuisce alla popolazione dell'options menu
 
+        val tilDomain: TextInputLayout = view.findViewById(R.id.til_new_domain)
+        val etDomain: TextInputEditText  = view.findViewById(R.id.et_new_domain)
+        val etUsername: TextInputEditText = view.findViewById(R.id.et_new_username)
+        val tilPassword: TextInputLayout = view.findViewById(R.id.til_new_password)
+        val etPassword: TextInputEditText = view.findViewById(R.id.et_new_password)
+        val btnAddCredential: Button = view.findViewById(R.id.btn_add)
+        val btnGeneratePwd: Button = view.findViewById(R.id.btn_generate)
 
         val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
 
         val packageManager = requireContext().packageManager
-        val listInfo = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+        val listInfo = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)    //Lista con tutte le ApplicationInfo delle app installate
 
         btnGeneratePwd.setOnClickListener {
-            val generatedPwd = passwordController.generatePassword()
+            val generatedPwd = passwordController.generatePassword()    //Generazione di una password random di 16 caratteri
             etPassword.setText(generatedPwd)
         }
 
@@ -63,6 +61,11 @@ class NewCredentialFragment : Fragment() {
             val password = etPassword.text.toString()
 
             var name = domain
+            /*
+            Se il nome associato alla credenziale corrisponde al nome di un'applicazione installata sul dispositivo, viene inserito
+            come dominio il package di tale applicazione, se non c'è alcuna corrispondenze il dominio coincide con il nome
+            inserito dall'utente
+            */
             for(elem in listInfo){
                 val appName = packageManager.getApplicationLabel(elem).toString()
                 if(appName.lowercase() == domain.lowercase()) {

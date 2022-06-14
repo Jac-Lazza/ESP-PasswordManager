@@ -24,21 +24,14 @@ import androidx.navigation.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-
+/*
+DetailFragment permette di vedere il dettaglio della credenziale, mostrando il nome, l'username e la password. Fornisce la
+possibilità di aggiornare il valore di username e password, e di eliminare la credenziale dalla lista.
+ */
 class DetailFragment : Fragment() {
 
-    private lateinit var tvName : TextView
-    private lateinit var tilDetailUsername : TextInputLayout
-    private lateinit var etDetailUsername : TextInputEditText
-    private lateinit var tilDetailPassword : TextInputLayout
-    private lateinit var etDetailPassword : TextInputEditText
-    private lateinit var btnDelete : Button
-    private lateinit var btnUpdate : Button
-    private lateinit var btnCopyUser : Button
-    private lateinit var btnCopyPwd : Button
-    private lateinit var ivBadge : ImageView
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        //Impostazione della freccia per tornare indietro nel back stack
         if(item.itemId == android.R.id.home)
             requireActivity().onBackPressed()
         return super.onOptionsItemSelected(item)
@@ -46,25 +39,25 @@ class DetailFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
+        val toolbar: Toolbar = view.findViewById(R.id.toolbar_detail)
+
         val activity = requireActivity()
-        val toolbar : Toolbar = view.findViewById(R.id.toolbar_detail)
-        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
-        activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        setHasOptionsMenu(true)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)     //Impostazione della toolbar
+        activity.supportActionBar!!.setDisplayHomeAsUpEnabled(true)     //Viene mostrata l'icona della freccia per tornare indietro
+        setHasOptionsMenu(true)     //Il fragment contribuisce alla popolazione dell'options menu
+
+        val tvName: TextView = view.findViewById(R.id.tv_detail_name)
+        val etDetailUsername: TextInputEditText = view.findViewById(R.id.et_username)
+        val tilDetailPassword: TextInputLayout = view.findViewById(R.id.til_password)
+        val etDetailPassword: TextInputEditText = view.findViewById(R.id.et_password)
+        val btnDelete: Button = view.findViewById(R.id.btn_delete)
+        val btnUpdate: Button = view.findViewById(R.id.btn_update)
+        val btnCopyUser: Button = view.findViewById(R.id.btn_username_copy)
+        val btnCopyPwd: Button = view.findViewById(R.id.btn_password_copy)
+        val ivBadge: ImageView = view.findViewById(R.id.badge_image)
 
         val passwordController = PasswordController(activity.getSharedPreferences(activity.packageName, Context.MODE_PRIVATE))
         val credentialViewModel = ViewModelProvider(this)[CredentialViewModel::class.java]
-
-        tvName = view.findViewById(R.id.tv_detail_name)
-        tilDetailUsername = view.findViewById(R.id.til_username)
-        etDetailUsername = view.findViewById(R.id.et_username)
-        tilDetailPassword = view.findViewById(R.id.til_password)
-        etDetailPassword = view.findViewById(R.id.et_password)
-        btnDelete = view.findViewById(R.id.btn_delete)
-        btnUpdate = view.findViewById(R.id.btn_update)
-        btnCopyUser = view.findViewById(R.id.btn_username_copy)
-        btnCopyPwd = view.findViewById(R.id.btn_password_copy)
-        ivBadge = view.findViewById(R.id.badge_image)
 
         val id = DetailFragmentArgs.fromBundle(requireArguments()).id
         val name = DetailFragmentArgs.fromBundle(requireArguments()).name
@@ -76,6 +69,7 @@ class DetailFragment : Fragment() {
         etDetailUsername.setText(username)
         etDetailPassword.setText(password)
 
+        //Si ottiene da un package esistente l'icona della relativa applicazione e la si imposta, altrimenti rimane quella di default
         try {
             val packageManager = activity.packageManager
             val appInfo = packageManager.getApplicationInfo(domain, PackageManager.GET_META_DATA)
@@ -84,17 +78,19 @@ class DetailFragment : Fragment() {
         }
         catch (e: Exception){ /*Intentionally left blank*/ }
 
+        //Gestione della copia dell'username nel Clipboard
         btnCopyUser.setOnClickListener {
             val manager: ClipboardManager? = activity.applicationContext.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
-            val clipData = ClipData.newPlainText("Username copiato",etDetailUsername.text.toString().trim())
+            val clipData = ClipData.newPlainText("Username",etDetailUsername.text.toString().trim())
             manager!!.setPrimaryClip(clipData)
             Toast.makeText(requireContext(), getString(R.string.copied_clipboard), Toast.LENGTH_LONG).show()
 
         }
 
+        //Gestione della copia della password nel Clipboard
         btnCopyPwd.setOnClickListener {
             val manager: ClipboardManager? = activity.applicationContext.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
-            val clipData = ClipData.newPlainText("Password copiata",etDetailPassword.text.toString())
+            val clipData = ClipData.newPlainText("Password",etDetailPassword.text.toString())
             manager!!.setPrimaryClip(clipData)
             Toast.makeText(requireContext(), getString(R.string.copied_clipboard), Toast.LENGTH_LONG).show()
 
@@ -139,7 +135,6 @@ class DetailFragment : Fragment() {
                 DialogInterface.OnClickListener { dialog, _ ->
                     dialog.cancel()
                     credentialViewModel.deleteByKey(id)
-                    Toast.makeText(context, "Password rimossa", Toast.LENGTH_LONG).show()
                     view.findNavController().navigate(R.id.action_detailFragment_to_listFragment)
             })
             .setNegativeButton(R.string.CANCEL,
