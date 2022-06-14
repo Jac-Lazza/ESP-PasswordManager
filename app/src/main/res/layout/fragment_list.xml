@@ -28,7 +28,7 @@
                 app:layoutManager="LinearLayoutManager" />
 
 
-
+        <!--ADD FLOATING ACTION BUTTON-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_floating_btn"
             android:layout_width="wrap_content"

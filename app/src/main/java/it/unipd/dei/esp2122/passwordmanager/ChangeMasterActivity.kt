@@ -50,12 +50,12 @@ class ChangeMasterActivity : AppCompatActivity() {
             val oldMaster = etOldMaster.text.toString()
             val newMaster = etNewMaster.text.toString()
             val confirmMaster = etConfirmMaster.text.toString()
-            val masterHash = preferences.getString(KEY_MASTER_PASSWORD, null)
-            val insertMasterHash = passwordController.hash(oldMaster)
+            val masterHash = preferences.getString(KEY_MASTER_PASSWORD, null) //hash della master passsword memorizzata
+            val insertMasterHash = passwordController.hash(oldMaster) //hash della master passsword inserita dall'utente
 
             if((masterHash == insertMasterHash) && (newMaster == confirmMaster) && (passwordController.strength(newMaster) > PasswordController.PASSWORD_WEAK)){
                 tilNewMaster.error = null
-                val newHash = passwordController.hash(newMaster)
+                val newHash = passwordController.hash(newMaster) //hash della nuova master password
                 val editor = preferences.edit()
                 editor.putString(KEY_MASTER_PASSWORD, newHash)
                 editor.apply()
