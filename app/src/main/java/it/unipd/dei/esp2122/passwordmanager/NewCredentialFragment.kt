@@ -14,8 +14,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 /*
-NewCredentialFragment permette di aggiungere una nuova credenziale specificando il nome, il nome utente (non obbligatorio) e la
-password. Se il nome della credenziale inserita coincide con il nome di un'applicazione installata nel dispositivo, viene collegata
+NewCredentialFragment permette di aggiungere una nuova credenziale specificando il dominio, il nome utente (non obbligatorio) e la
+password. Se il dominio della credenziale inserita coincide con il nome di un'applicazione installata nel dispositivo, viene collegata
 al relativo package nel database.
 */
 class NewCredentialFragment : Fragment() {
@@ -62,9 +62,9 @@ class NewCredentialFragment : Fragment() {
 
             var name = domain
             /*
-            Se il nome associato alla credenziale corrisponde al nome di un'applicazione installata sul dispositivo, viene inserito
-            come dominio il package di tale applicazione, se non c'è alcuna corrispondenze il dominio coincide con il nome
-            inserito dall'utente
+            Se il dominio associato alla credenziale corrisponde al nome di un'applicazione installata sul dispositivo, viene inserito
+            come dominio il package di tale applicazione, se non c'è alcuna corrispondenza il dominio coincide con ciò che ha
+            inserito l'utente
             */
             for(elem in listInfo){
                 val appName = packageManager.getApplicationLabel(elem).toString()
