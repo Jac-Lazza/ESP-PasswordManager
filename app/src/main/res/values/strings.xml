@@ -18,6 +18,11 @@
     <string name="DELETE">DELETE</string>
     <string name="CANCEL">Cancel</string>
 
+    <!-- TOOLBAR MAIN-->
+    <string name="search">Search</string>
+    <string name="delete_all">Delete All</string>
+    <string name="enable_autofill">Enable Autofill</string>
+
     <!--LOGIN LAYOUT-->
     <string name="login">LOGIN</string>
     <string name="hello">Hello %1$s</string>
@@ -46,10 +51,10 @@
     <string name="delete">DELETE</string>
 
     <!--CHANGE MASTER LAYOUT-->
-    <string name="change_master">Change master password</string>
-    <string name="old_master">Old password</string>
-    <string name="new_master">New password</string>
-    <string name="confirm_new_master">Confirm new password</string>
+    <string name="change_master">Change Master Password</string>
+    <string name="old_master">Old Password</string>
+    <string name="new_master">New Password</string>
+    <string name="confirm_new_master">Confirm New Password</string>
     <string name="change">CHANGE</string>
 
 </resources>
