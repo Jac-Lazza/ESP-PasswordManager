@@ -1,33 +1,31 @@
 package it.unipd.dei.esp2122.passwordmanager
 
-import android.app.Service
 import android.app.assist.AssistStructure
 import android.content.Context
-import android.content.Intent
 import android.os.CancellationSignal
-import android.os.IBinder
 import android.service.autofill.*
-import android.text.InputType
 import android.util.Log
-import android.view.View
-import android.view.autofill.AutofillId
 import android.view.autofill.AutofillValue
 import android.widget.RemoteViews
 import kotlinx.coroutines.*
 import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
+/*
+* La classe PMAutofillService è dedicata al riempimento delle caselle di testo di altre applicazioni
+* con i dati dell'utente memorizzati. Purtroppo la realizzazione dell'Autofill si è rivelata più complicata
+* di quanto previsto e si è deciso di sviluppare una piccola parte significativa in modo sicuro secondo
+* le nostre conoscenze
+* */
 class PMAutofillService : AutofillService() {
 
     private val serviceScope = CoroutineScope(EmptyCoroutineContext)
 
     private companion object{
-        const val AS_TAG = "AutofillService" //Used for debugging
+        const val AS_TAG = "AutofillService"
     }
 
     /*override fun onBind(intent: Intent): IBinder {
-        //In an autofill service this method cannot be overwritten
+        //In un servizio di autofill la funzione onBind non può essere sovrascritta
     }*/
 
     override fun onFillRequest(request : FillRequest, cancellationSignal : CancellationSignal, callback : FillCallback) {
@@ -35,7 +33,8 @@ class PMAutofillService : AutofillService() {
         val structure : AssistStructure = context[context.size - 1].structure
         val parsedData = AutofillStructure(structure)
 
-        if(parsedData.domain == packageName){   //Per non autofillare l'applicazione stessa
+        if(parsedData.domain == packageName){
+            //Richieste di autofill da parte dell'applicazione stessa vengono ignorate
             callback.onSuccess(null)
             return
         }
@@ -49,13 +48,13 @@ class PMAutofillService : AutofillService() {
             * Dalla nostra esperienza possiamo dire che nessuna delle applicazioni che abbiamo testato
             * mette a disposizione anche un solo autofill hint. Dunque, per rimanere con una logica
             * di autofill abbastanza contenuta, il service utilizzerà sempre un approccio euristico
-            * (abbastanza severo aggiungerei) per capire la natura dell'activity dell'applicazione
+            * (limitato ma restrittivo) per capire la natura dell'activity dell'applicazione.
             * */
         }
 
         val heuristicClassification = parsedData.heuristicClassification()
 
-        if(heuristicClassification == AutofillStructure.EMPTY_LOGIN_FORM){ //Proceed to fill the login editTexts
+        if(heuristicClassification == AutofillStructure.EMPTY_LOGIN_FORM){
             Log.d(AS_TAG, "Login form detected")
             val loginStructure = parsedData.getLoginStructure()
             serviceScope.launch(){
@@ -82,28 +81,35 @@ class PMAutofillService : AutofillService() {
             }
             return
         }
-        else if(heuristicClassification == AutofillStructure.LOGIN_FORM_WITH_DATA){ //Login with different credentials => save them
-            /*val username = parsedData.editTextList.elementAt(0).text.toString()
-            val password = parsedData.editTextList.elementAt(1).text.toString()
-            Log.e(AS_TAG, "SAVE PATH TRIGGERED!")
-            Log.e(AS_TAG, "Saving login state possibility: ${username} :: ${password}")*/
+        else if(heuristicClassification == AutofillStructure.LOGIN_FORM_WITH_DATA){
+            /*
+            * Questo ramo dell'autofill dovrebbe essere richiamato quando l'utente inserisce delle credenziali
+            * ignorando il servizio di autofill. Se questo è il caso allora l'applicazione dovrebbe proseguire
+            * a chiedere il salvataggio dei dati.
+            * Purtroppo non siamo riusciti a stimolare questo comportamento all'interno delle applicazioni
+            * testate per l'autofill
+            * */
             callback.onSuccess(null)
         }
-        else if(heuristicClassification == AutofillStructure.REGISTER_FORM_WITH_DATA){ //Proceed to ask user to save credentials
+        else if(heuristicClassification == AutofillStructure.REGISTER_FORM_WITH_DATA){
+            /*
+            * Analogo al caso precedente, ma per un form di registrazione
+            * */
             callback.onSuccess(null)
         }
         else{
-            callback.onSuccess(null) //For security reason: when heuristics fail, don't fill
+            /*
+            * Il comportamento di default è quello di non iniettare i dati dell'utente all'interno
+            * delle applicazioni che richiedono il servizio a meno che non si sia sicuri di aver riconosciuto
+            * l'activity che ha scatenato la richiesta di autofill
+            * */
+            callback.onSuccess(null)
         }
 
     }
 
     /*
-    * Logica dedicata al salvataggio dei dati.
-    * Purtroppo la realizzazione di un autofill è più complicata di quanto avevamo previsto e non è
-    * l'obiettivo primario della consegna. Dunque abbiamo deciso di lasciare la parte di riempimento
-    * sviluppata con attenzione nei confronti della sicurezza dell'utente (basta vedere i controlli
-    * euristici eseguiti in AutofillStructure per determinare un login)
+    * Logica dedicata al salvataggio dei dati, non implementata
     * */
     override fun onSaveRequest(request : SaveRequest, callback : SaveCallback) {
         callback.onSuccess()
@@ -113,7 +119,7 @@ class PMAutofillService : AutofillService() {
         serviceScope.cancel()
     }
 
-    /* Access to the database */
+    /* Accesso al database */
     private suspend fun queryCredentialsForDomain(domain : String) : List<Credential>{
         val databaseHandler = CredentialRoomDatabase.getDatabase(applicationContext)
         val passwordController = PasswordController(getSharedPreferences(packageName, Context.MODE_PRIVATE))
@@ -127,6 +133,6 @@ class PMAutofillService : AutofillService() {
         }
     }
 
-    /* Classes for the service*/
+    /* Classi interne ad uso del service */
     private data class Credential(val username : String, val password : String)
 }

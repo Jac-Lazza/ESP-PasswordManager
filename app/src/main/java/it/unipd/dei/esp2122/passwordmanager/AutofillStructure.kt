@@ -30,36 +30,38 @@ class AutofillStructure(private val structure : AssistStructure) {
         domain = structure.activityComponent.packageName
         if(structure.windowNodeCount > 0) {
             for (index in 0 until structure.windowNodeCount) {
-                parseNode(structure.getWindowNodeAt(index).rootViewNode) //Iterating throughout a forest of ViewNodes
+                parseNode(structure.getWindowNodeAt(index).rootViewNode) //In ingresso abbiamo una foresta di ViewNode
             }
         }
     }
 
-    /* It's a DFS that focuses on the leaves of the tree*/
+    /*
+    * Il parsing di un albero di ViewNode viene eseguito tramite Depth First Search. La logica
+    * per il filtraggio è la seguente:
+    *   1) Vengono considerate le foglie, non i nodi interni
+    *   2) Delle foglie, vengono memorizzate EditText e TextView (queste ultime non sono poi usate nell'euristica)
+    *   3) Si conta l'utilizzo degli autofillHints (se diverso da zero richiederebbe un parsing dedicato)
+    * */
     private fun parseNode(node : AssistStructure.ViewNode){
-        //Step 1: We need just the leaves, the rest can be ignored
         if(node.childCount > 0){
             for(index in 0 until node.childCount){
                 parseNode(node.getChildAt(index))
             }
         }
         else{
-            //Step 2: Of all the leaves, we need EditTexts and TextViews
             if(node.className == TextView::class.qualifiedName){
                 textViewList.add(node)
             }
             else if(node.className == EditText::class.qualifiedName){
                 editTextList.add(node)
             }
-
-            //Step 3: We check for the presence of autofillHints (Experiments shows that they are rarely used, making our work harder)
-            if(node.autofillHints?.isNotEmpty() == true){ //boolean == true, and I'm forced to do this...
+            if(node.autofillHints?.isNotEmpty() == true){
                 autofillHintsDetected++
             }
         }
     }
 
-    /* Heuristics functions */
+    /* Funzioni euristiche */
     fun heuristicClassification() : Int {
         if(isLoginForm()){
             if(isLoginFormWithData()){
@@ -77,7 +79,14 @@ class AutofillStructure(private val structure : AssistStructure) {
         }
     }
 
-    /* Private functions for heuristic */
+    /*
+    * Determina se l'Activity che ha richiesto il servizio di autofill è dedicata al login (username e password).
+    * I requisiti per un'activity di login sono i seguenti:
+    *   1) Possedere due sole EditText
+    *   2) La prima EditText è di classe testo o numero
+    *   3) La seconda EditText è di qualsiasi classe, purché mascherata
+    *   4) Le due EditText siano visibili all'utente
+    * */
     private fun isLoginForm() : Boolean {
         val usernameInputTypeMask = InputType.TYPE_CLASS_TEXT or InputType.TYPE_CLASS_NUMBER
         val passwordInputTypeMask =
@@ -125,10 +134,12 @@ class AutofillStructure(private val structure : AssistStructure) {
         return AutofillLogin(usernameId, passwordId)
     }
 
+    /*
+    * Non implementata
+    * */
     fun isRegisterForm() : Boolean{
         return false
     }
 
-    /* Internal classes */
     data class AutofillLogin(val usernameId : AutofillId, val passwordId : AutofillId)
 }

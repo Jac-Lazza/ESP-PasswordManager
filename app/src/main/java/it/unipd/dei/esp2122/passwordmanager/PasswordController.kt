@@ -19,37 +19,40 @@ class PasswordController(private val preferences : SharedPreferences){
         private const val SALT_KEY = "PASSWORD_CONTROLLER_SALT_KEY"
         private const val SECRET_KEY_ALIAS = "SECRET_KEY_ALIAS"
 
-        //ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~
+        //I simboli possibili sono suddivisi in gruppi di alfabeti
         const val ALPHABET_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         const val ALPHABET_LOWER = "abcdefghijklmnopqrstuvwxyz"
         const val ALPHABET_DIGIT = "0123456789"
-        const val ALPHABET_SPECIAL = " !\"#\$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+        const val ALPHABET_SPECIAL = " !\"#\$%&'()*+,-./:;<=>?@[\\]^_`{|}~" //Lista dei caratteri speciali presa da OWASP
 
-        //Let's think if it's to keep
+        //I valori tornano utili se utilizzati come percentuali
         const val PASSWORD_WEAK = 33
         const val PASSWORD_MEDIUM = 66
         const val PASSWORD_HARD = 100
     }
 
     /*
-    * Must be called once to initialize the salt and cryptographic key to use in this vault
-    * It's called once and then the data is saved in the preferences
+    * Va chiamato una volta per inizializzare la chiave di criptazione e il sale per l'hashing della
+    * master password
     * */
     fun init(){
-        //Generating the salt and saving it
-        val salt = generatePassword(5) //The salt can be considered as a small additional password
+        /*
+        * L'hash viene "salato" in modo da renderlo più sicuro contro attacchi di ricerca di hash noti,
+        * basta solo che venga memorizzato
+        * */
+        val salt = generatePassword(5)
         val editor = preferences.edit()
         editor.putString(SALT_KEY, salt)
         editor.apply()
 
-        //Preparing the specifications for an AES key, Galois Counter Mode with no padding
+        //Specifiche per una chiave AES, modalità GCM senza padding
         val keyGen = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
         val keySpec = KeyGenParameterSpec.Builder(SECRET_KEY_ALIAS, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
             .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
             .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
             .build()
 
-        //Generating the key inside the keystore (has it's own small CPU and random number generator)
+        //Generazione della chiave all'interno del KeyStore
         keyGen.init(keySpec)
         keyGen.generateKey()
 
@@ -68,12 +71,11 @@ class PasswordController(private val preferences : SharedPreferences){
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         cipher.init(Cipher.ENCRYPT_MODE, getKey())
 
-        //Need to check if the input needs padding
         val clearTextBytes = clearText.toByteArray(Charsets.UTF_8)
-        val iv = cipher.iv //This gets a random initialization vector every time
+        val iv = cipher.iv //Inizializzato in automatico dalla classe Cipher in modo casuale
 
         val encryptedBytes = cipher.doFinal(clearTextBytes)
-        //We need to return a string, but the iv can't be lost
+        //L'IV non può essere perduto, viene concatenato alla stringa in uscita, la sua lunghezza è fissa
         return Base64.getEncoder().encodeToString(encryptedBytes + iv)
     }
 
@@ -88,6 +90,10 @@ class PasswordController(private val preferences : SharedPreferences){
         return cipher.doFinal(passwordEncryptedBytes).toString(Charsets.UTF_8)
     }
 
+    /*
+    * In base al valore dell'entropia della password, restituisce la sua forza.
+    * L'idea è quella di rendere più consapevole l'utente nella scelta della sua master password
+    * */
     fun strength(password : String) : Int{
         val strengthThreshold = 30.0
         val entropy = entropy(password)
@@ -131,19 +137,15 @@ class PasswordController(private val preferences : SharedPreferences){
         keyStore.load(null)
 
         val keyStoreEntry = keyStore.getEntry(SECRET_KEY_ALIAS, null) as? KeyStore.SecretKeyEntry
-        //To check
         if(keyStoreEntry == null){
             throw Exception("Cryptography configuration error: secret key not defined")
         }
-        //End of check
         return keyStoreEntry.secretKey
     }
 
     /*
-    * Returns the entropy of a password.
-    * The entropy is calculated as the length of the password multiplied by the logarithm in base 2
-    * of the cardinality of the alphabet that the password uses.
-    * The alphabet is divided in 4 categories, a strong password should use character from all of them
+    * Calcola l'entropia di una password.
+    * Questa funzione viene utilizzata nel calcolo della forza di una password
     * */
     private fun entropy(password : String) : Double {
         var cardinality = 0
@@ -155,9 +157,9 @@ class PasswordController(private val preferences : SharedPreferences){
     }
 
     /*
-    * If the string uses characters of the given alphabet, returns the cardinality of the alphabet,
-    * zero otherwise.
-    * This is used for calculating the entropy of a password
+    * Se la stringa utilizza caratteri dell'alfabeto, restituisce la cardinalità dell'alfabeto,
+    * altrimenti restituisce zero.
+    * Questa funzione viene utilizzata nel calcolo dell'entropia
     * */
     private fun alphabetCardinality(password : String, alphabet : String) : Int{
         for(i in password){
